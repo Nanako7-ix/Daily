@@ -1,0 +1,83 @@
+#include<bits/stdc++.h>
+#include<ext/pb_ds/assoc_container.hpp>
+#include<ext/pb_ds/tree_policy.hpp>
+#define setpre(x) fixed << setprecision(x)
+#define debug(x) cerr << #x << " = " << x << "\n"
+#define endl "\n"
+using namespace std;
+using namespace __gnu_pbds;
+
+using i64 = long long;
+using u64 = unsigned long long;
+using u32 = unsigned;
+using u128 = unsigned __int128;
+using i128 = __int128;
+
+constexpr int inf = 0x3f3f3f3f;
+constexpr i64 INF = 0x3f3f3f3f3f3f3f3f;
+constexpr i64 N = 50000;
+
+vector<i64> pre(N + 1);
+void prework() {
+    for(int n = 1; n <= N; ++n) {
+        for(int k = 1; k <= n; ++k) {
+            i64 l = k, r = n / (n / k);
+            pre[n] += (n / k) * (r - l + 1);
+            k = r;
+        }
+    }
+}
+
+// d     |   2   | f(i) + 1
+// sigma | 1 + i | f(i) + ip
+// phi   | i - 1 | f(i) * p
+// mu    |   -1  | 0
+vector<int> minp, primes, mu;
+void sieve(int n) {
+    minp.assign(n + 1, 0);
+    primes.clear();
+    mu.assign(n + 1, 0);
+    mu[1] = 1;
+
+    vector<i64> g(n + 1, 0);
+    for(int i = 2; i <= n; ++i) {
+        if(!minp[i]) {
+            minp[i] = i;
+            g[i] = i, mu[i] = -1;
+            primes.push_back(i);
+        }
+        for(auto p : primes) {
+            if(i * p > n) break;
+            minp[i * p] = p;
+            g[i * p] = p * (i % p ? 1 : g[i]);
+            if(i * p == g[i * p]) mu[i * p] = 0;
+            else mu[i * p] = mu[g[i * p]] * mu[i * p / g[i * p]];
+            if(i % p == 0) break;
+        }
+    }
+    for(int i = 1; i <= n; ++i) {
+        mu[i] += mu[i - 1];
+    }
+}
+
+void solve() {
+    int n, m;
+    cin >> n >> m;
+    i64 ans = 0;
+    for(int i = 1; i <= min(n, m); ++i) {
+        i64 l = i, r = min(n / (n / i), m / (m / i));
+        ans += (mu[r] - mu[l - 1]) * pre[n / i] * pre[m / i];
+        i = r;
+    }
+    cout << ans << endl;
+}
+
+signed main() {
+    cin.tie(0), cout.tie(0) -> sync_with_stdio(0);
+    int T = 1;
+    prework();
+    sieve(N);
+    cin >> T;
+    while(T--) solve();
+    return 0;
+}
