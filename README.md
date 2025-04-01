@@ -12,6 +12,7 @@
 #### [Yet Another Real Number Problem](https://codeforces.com/contest/2035/problem/D)
 
 Tag: 单调栈
+
 CF Rating: 1800
 
 ##### [解法](./Codeforces/2035/2035D.cpp)
