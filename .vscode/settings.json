@@ -94,5 +94,94 @@
         "thread": "cpp",
         "typeindex": "cpp",
         "typeinfo": "cpp"
-    }
+    },
+    "workbench.colorCustomizations": {
+        // "editor.background": "#300a24",                 // 背景颜色
+        // "sideBar.background": "#401032",                // 侧边栏颜色
+        // "titleBar.inactiveBackground": "#531842",       // 顶部菜单栏颜色(切换其他应用)
+        // "titleBar.activeBackground": "#401032",         // 顶部菜单栏颜色(当前应用)
+        // "tab.activeBackground": "#2c0b22",              // 上面当前激活的文件的颜色
+        // "tab.inactiveBackground": "#360e2a",            // 上面当前未激活的文件的颜色
+        // "tab.border": "#300222",                        // 文件与文件之间分割的颜色
+        "statusBar.background": "#274444",              // 底部状态栏
+
+        // "editor.lineHighlightBackground": "#471739",    // 光标所在行颜色
+        "editorCursor.foreground": "#ADACA9",           // 光标颜色
+        "editor.foreground": "#FFFFFF",                 // 文字默认颜色 (, ; <>)
+
+        "sideBar.foreground": "#FFFFFF",
+        "titleBar.activeForeground": "#FFFFFF",         // 菜单栏文字颜色
+        "titleBar.inactiveForeground": "#AAAAAA",  // 顶部菜单栏（未激活状态）文字颜色
+        "tab.activeForeground": "#FFFFFF",  // 当前激活的文件标签文本颜色
+        "tab.inactiveForeground": "#AAAAAA",  // 当前激活的文件标签文本颜色
+    },
+    "editor.tokenColorCustomizations": {
+        "textMateRules": [
+            {
+                "scope": "variable",
+                "settings": { "foreground": "#93CEEE" }  // 变量的颜色
+            },
+            {
+                "scope": "variable.parameter",
+                "settings": { "foreground": "#93CEEE" }  // 函数参数
+            },
+            {
+                "scope": "entity.name.function",
+                "settings": { "foreground": "#F9AE57" }  // 方法（函数）名称
+            },
+            {
+                "scope": "entity.name.type",
+                "settings": {
+                    "foreground": "#41bfac",
+                    // "fontStyle": "bold",
+                }  // 类名、接口名
+            },
+            {
+                "scope": "entity.name.namespace",
+                "settings": { "foreground": "#41bfac" }  // 命名空间
+            },
+            {
+                "scope": "storage.type",
+                "settings": {
+                    "foreground": "#c695c6",
+                    // "fontStyle": "bold"
+                }  // 关键字（如 `int`, `void`, `class`）
+            },
+            {
+                "scope": "storage.type.namespace.definition",
+                "settings": {
+                    "foreground": "#ec6066",
+                    // "fontStyle": "bold"
+                }
+            },
+            {
+                "scope": "keyword.control",
+                "settings": {
+                    "foreground": "#ec6066",
+                    // "fontStyle": "bold"
+                }  // 关键字（如 `if`, `else`, `return`）
+            },
+            {
+                "scope": "keyword.other.using",
+                "settings": {
+                    "foreground": "#ec6066"
+                }
+            },
+            {
+                "scope": "keyword.other.",
+                "settings": {
+                    "foreground": "#ec6066",
+                }
+            },
+            {
+                "scope": "string.quoted.other.lt-gt.include.cpp",
+                "settings": {
+                    "foreground": "#F9AE57",
+                }
+            },
+        ],
+    },
+    "editor.fontFamily": "Fira Code Medium, Microsoft Yahei",
+    "editor.fontLigatures": true,
+    "terminal.integrated.fontFamily": "Consolas",
 }

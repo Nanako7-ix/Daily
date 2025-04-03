@@ -39,6 +39,7 @@ void solve() {
             for(int i = 1; i <= n; ++i) {
                 y += t[i] == 'o';
             }
+
             for(int i = 1; i <= n; ++i) {
                 if(t[i] == 'v') {
                     res += x * y;

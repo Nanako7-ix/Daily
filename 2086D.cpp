@@ -1,8 +1,8 @@
 // Author: Nanako7_ix
-// Created: 2025/03/30 22:58:40
-#include<bits/stdc++.h>
-#include<ext/pb_ds/assoc_container.hpp>
-#include<ext/pb_ds/tree_policy.hpp>
+// Created: 2025/04/03 23:17:21
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
 #define setpre(x) fixed << setprecision(x)
 #define debug(x) cerr << #x << " = " << x << "\n"
 #define endl "\n"
@@ -63,48 +63,79 @@ private:
     U x;
 };
 
-using m32 = ModInt<u32, 1000000007>;
+using m32 = ModInt<u32, 998244353>;
 
-constexpr int dir[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+template<typename m32>
+struct Comb {
+    int n;
+    vector<m32> fact, invfact;
+    Comb() : n(0), fact{1}, invfact{1} {}
+    void init(int m) {
+        if(m <= n) return;
+        fact.resize(m + 1);
+        invfact.resize(m + 1);
+        for(int i = n + 1; i <= m; ++i) {
+          fact[i] = fact[i - 1] * i;
+        }
+        invfact[m] = fact[m].inv();
+        for(int i = m; i >= n + 1; --i) {
+          invfact[i - 1] = invfact[i] * i;
+        }
+        n = m;
+    }
+    m32 fac(int m) {
+        if(n < m) init(2 * m);
+        return fact[m];
+    }
+    m32 invfac(int m) {
+        if(n < m) init(2 * m);
+        return invfact[m];
+    }
+    m32 inv(int m) {
+        return fac(m) * invfac(m - 1);
+    }
+    m32 C(int n, int m) {
+        if(n < m || m < 0) return 0;
+        return fac(n) * invfac(m) * invfac(n - m);
+    }
+    m32 A(int n, int m) {
+        if(n < m || m < 0) return 0;
+        return fac(n) * invfac(n - m);
+    }
+};
+
+Comb<m32> comb;
 
 void solve() {
-    i64 n, m, k, cnt = 0;
-    cin >> n >> m >> k;
-    set<array<int, 2>> S;
-    for (int i = 1; i <= k; ++i) {
-        int x, y, z;
-        cin >> x >> y >> z;
-        if((x == 1 || x == n) && (1 < y && y < m)) {
-            cnt++;
-        }
-        if((y == 1 || y == m) && (1 < x && x < n)) {
-            cnt++;
-        }
-        if(z) S.insert({x, y});
+    int n = 0;
+    array<int, 26> a {};
+    for(int i = 0; i < 26; ++i) {
+        cin >> a[i];
+        n += a[i];
     }
 
-    n += 1;
-
-    if(cnt != 2 * n + 2 * m - 8) {
-        cout << power<m32> (2, n * m - k - 1) << endl;
-    } else {
-        int ans = 0;
-        for(auto [x, y] : S) {
-            for(int i = 0; i < 4; ++i) {
-                int tx = x + dir[i][0];
-                int ty = y + dir[i][1];
-                if(1 <= tx && tx <= n && 1 <= ty && ty <= m) {
-                    if(!S.contains({tx, ty})) ans++;
-                }
+    int odd = (n + 1) / 2, even = n - odd;
+    vector<m32> dp(odd + 1);
+    dp[0] = 1;
+    for(int i = 0, m = 0; i < 26; ++i) {
+        if(a[i] == 0) continue;
+        vector<m32> ndp(odd + 1);
+        for(int j = odd; j >= 0; --j) {
+            if(j >= a[i]) {
+                ndp[j] += dp[j - a[i]] * comb.C(odd - j + a[i], a[i]);
+            }
+            if(j <= m) {
+                ndp[j] += dp[j] * comb.C(even - (m - j), a[i]);
             }
         }
-        if(ans & 1) cout << "0\n";
-        else cout << power<m32> (2, n * m - k) << endl;
+        swap(dp, ndp), m += a[i];
     }
+    cout << dp[odd] << endl;
 }
 
 signed main() {
-    cin.tie(0), cout.tie(0) -> sync_with_stdio(0);
+    cin.tie(0), cout.tie(0);
+    ios::sync_with_stdio(0);
     int T = 1;
     cin >> T;
     while(T--) solve();
