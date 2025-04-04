@@ -124,3 +124,83 @@ Tag: 贪心，思维
 坑点：特判 $x = 0$，因为枚举最高位的时候没有考虑不存在最高位。没判这个调红温了。
 
 [Code](./nowcoder/牛客练习赛136/D.cpp)
+
+### Edu177
+
+#### [A. Cloudberry Jam](https://codeforces.com/contest/2086/problem/A)
+
+水题: 直接输出 $2n$ 即可. [Code](./Codeforces/2086/2086A.cpp)
+
+#### [B. Large Array and Segments](https://codeforces.com/contest/2086/problem/B)
+
+水题, 直接暴力枚举即可. [Code](./Codeforces/2086/2086B.cpp)
+
+std::二分
+
+```cpp
+int p = lower_bound(suf.begin() + 1, suf.end(), need, [](i64 ai, i64 x) {
+    return !(ai < x);
+});
+int p = upper_bound(suf.begin() + 1, suf.end(), need, [](i64 x, i64 ai) {
+    return ai < x;
+});
+int p = partition_point(suf.begin() + 1, suf.end(), [&](i64 ai) {
+    return !(ai < x);
+});
+```
+
+这三个等价
+
+#### [C. Disappearing Permutation](https://codeforces.com/contest/2086/problem/C)
+
+水题, 排列判环. [Code](./Codeforces/2086/2086C.cpp), 下面是板子
+
+```cpp
+for(int u = x; !vis[u]; vis[u] = 1, u = p[u]) {
+    ans++;
+}
+```
+
+#### [D. Even String](https://codeforces.com/contest/2086/problem/D)
+
+Tag: 背包dp
+
+注意到每一种字符要么全放在奇数位置，要么全放在偶数位置。总共 $O(1)$ 种决策。$dp(i)$ 表示奇数位置已经被占用了 $i$ 个的情况下的方案数。通过奇数可以计算出偶数被占用的位置有多少个。
+
+假设我们可以计算出当前奇数位置有 $x$ 个空位，偶数位置有 $y$ 个空位，当前需要放入 $k$ 个字符，那么有：
+
+$$
+\begin{aligned}
+ndp(\lceil \frac{n}{2} \rceil - x + k) &\leftarrow dp(\lceil \frac{n}{2} \rceil - x) \cdot C_{x}^{k}\\
+ndp(\lceil \frac{n}{2} \rceil - x) &\leftarrow dp(\lceil \frac{n}{2} \rceil - x) \cdot C_{y}^{k}\\
+\end{aligned}
+$$
+
+[Code](./Codeforces/2086/2086D.cpp)
+
+#### [E. Zebra-like Numbers](https://codeforces.com/contest/2086/problem/E)
+
+Tag: 预处理
+
+考虑使用前缀和-差分的方式计算 $[0, r]$ 中 $f(x) = k$ 的个数减去 $[0, l)$ 中 $f(x) = k$ 的个数。记 $dp(i, j)$ 为：只使用前 $i$ 个斑马数的情况下，满足 $f(x) = j$ 的 $x$ 的个数。计算 $[0, n]$ 中满足 $f(x) = k$ 的个数可以“拆位”计算，计算方式可以参考代码理解一下。有点像是数位dp，这一位取最大和这一位不取最大。
+
+```cpp
+i64 solve(i64 n, i64 k) {
+    i64 ans = 0;
+    for(int i = 30; i > 0; --i) {
+        if(n >= zebra[i]) {
+            int x = n / zebra[i];
+            n %= zebra[i];
+            for(int j = 0; j < x; ++j) {
+                if(k - j < 0) break;
+                ans += dp[{i - 1, k - j}];
+            }
+            k -= x;
+        }
+        if(k < 0) break;
+    }
+    return ans + (k == 0);
+}
+```
+
+[Code](./Codeforces/2086/2086E.cpp)

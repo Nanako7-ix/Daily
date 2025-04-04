@@ -95,6 +95,7 @@
         "typeindex": "cpp",
         "typeinfo": "cpp"
     },
+    "C_Cpp.default.compilerPath": "/usr/bin/gcc",
     "workbench.colorCustomizations": {
         // "editor.background": "#300a24",                 // 背景颜色
         // "sideBar.background": "#401032",                // 侧边栏颜色
