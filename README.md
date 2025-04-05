@@ -204,3 +204,31 @@ i64 solve(i64 n, i64 k) {
 ```
 
 [Code](./Codeforces/2086/2086E.cpp)
+
+### Edu152
+
+#### [A. Morning Sandwich](https://codeforces.com/contest/1849/problem/A)
+
+水题, [Code](./Codeforces/1849/1849A.cpp)
+
+#### [B. Monsters](https://codeforces.com/contest/1849/problem/B)
+
+如果怪物不能被一击必杀, 那么它的血量大于 $k$, 那么它一定会在出现怪物死亡之前被攻击直到进入一击必杀状态. 考虑所有怪物都是一击必杀状态且没有怪物死亡, 那么怪物一定是按照血量降序, 位置升序的方式死亡.
+
+直接 `map<int, vector<int>>` 表示怪物血量 (一击必杀态时) 的桶. 倒序枚举即可
+
+#### [C. Binary String Copying](https://codeforces.com/contest/1849/problem/C)
+
+Tag: 哈希
+
+解法一: 注意到需要找本质不同的字符串的个数, 考虑使用哈希求解.  考虑一次操作, 我们不可能真的对字符串进行排序, 但是排序的结果我们是知道的, 那么我们可以考虑手动 $O(1)$ 计算操作后的字符串的哈希值.
+
+具体的操作是: 计算出排序后区间的哈希值贡献, 替换掉原本这段区间的哈希值贡献. 就可以得到整个字符串的哈希值. 把 $m$ 次操作后的哈希值塞到一个 `set` 里面输出 `size` 即可.
+
+字符串哈希的公式为:
+
+$$
+H = \sum\limits_{i = 1}^{n} s_i \cdot x^{n - i}
+$$
+
+字符串是右对齐的, 左移 $k$ 位需要乘上 $x^k$

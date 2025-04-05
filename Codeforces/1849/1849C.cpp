@@ -21,8 +21,8 @@ constexpr i64 INF = 0x3f3f3f3f3f3f3f3f;
 constexpr i64 exgcd(i64 a, i64 b, i64& x, i64& y) {
     if(b == 0) {
         assert(a != 0);
-        x = a / abs(a), y = 0;
-        return abs(a);
+        x = a / std::abs(a), y = 0;
+        return std::abs(a);
     }
     i64 d = exgcd(b, a % b, y, x);
     y -= a / b * x;
