@@ -307,9 +307,11 @@ CF Rating: 1700
 
 这个条件一看就不是特别可做啊，但是仔细一想：如果我可以让前面的 $\lceil\frac{n}{3}\rceil - 1$ 位的 $c$ 全是素数，那么就是满足条件的。
 
-让前面的全是素数，只需要构造 $[\begin{matrix} & p & p + 1 & p - 1 & p+2 & p - 2 & \cdots & \end{matrix}]$。
+让前面的全是素数，只需要构造 $\begin{matrix}p & p + 1 & p - 1 & p+2 & p - 2 & \cdots\end{matrix}$。
 
-[**2085C**](https://codeforces.com/contest/2085/problem/DC)
+[Code](./Codeforces/2090/2090D.cpp)
+
+[**2085C**](https://codeforces.com/contest/2085/problem/C)
 
 Tag: 构造
 
@@ -320,3 +322,5 @@ CF Rating: 1600
 取等的条件就是对于任意一位，不能有 $x_k = y_k = 1$。所以考虑从低位到高位扫，如果遇到了这种情况，如果下 $k$ 位都是相同的，那么没有办法只能在这位上加一。否则可以适当加上一个数，使得 $x$ 和 $y$ 中只有一个进位。
 
 发现第一种方案其实是缓兵之计，并不能根本地解决问题，如果遇到前面的位也是一样就寄了。那么总结一下，前面一样，这位一样都是 $1$，后面也都一样，所以 $x = y$。也就是当且仅当 $x = y$ 不存在构造方案。
+
+[Code](./Codeforces/2085/2085C.cpp)
