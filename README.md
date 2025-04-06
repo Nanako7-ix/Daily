@@ -307,7 +307,13 @@ CF Rating: 1700
 
 这个条件一看就不是特别可做啊，但是仔细一想：如果我可以让前面的 $\lceil\frac{n}{3}\rceil - 1$ 位的 $c$ 全是素数，那么就是满足条件的。
 
-让前面的全是素数，只需要构造 $\begin{matrix}p & p + 1 & p - 1 & p+2 & p - 2 & \cdots\end{matrix}$。
+让前面的全是素数，只需要构造
+
+$$
+\begin{matrix}
+p & p + 1 & p - 1 & p+2 & p-2 & \cdots
+\end{matrix}
+$$
 
 [Code](./Codeforces/2090/2090D.cpp)
 
