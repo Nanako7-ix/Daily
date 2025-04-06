@@ -260,3 +260,39 @@ Tag: 数据结构 + dp
 ### abc
 
 ### div 1+2
+
+### 牛客周赛 88
+
+[**A. 吔我大炮！**](https://ac.nowcoder.com/acm/contest/106318/A)
+
+水题, [Cdoe](./nowcoder/牛客周赛-Round-88/A.cpp)
+
+[**B. 梦间**](https://ac.nowcoder.com/acm/contest/106318/B)
+
+水题, [Cdoe](./nowcoder/牛客周赛-Round-88/B.cpp)
+
+[**C. 坠入**](https://ac.nowcoder.com/acm/contest/106318/C)
+
+水题, [Cdoe](./nowcoder/牛客周赛-Round-88/C.cpp)
+
+[**D. 漫步**](https://ac.nowcoder.com/acm/contest/106318/D)
+
+相当于是找一个位置，$x$ 的该位二进制为 $0$，输出只有这位为 $1$ 的数字就行了。如果没有找到就输出 $-1$，水。[Cdoe](./nowcoder/牛客周赛-Round-88/D.cpp)
+
+[**E. 秘藏**](https://ac.nowcoder.com/acm/contest/106318/E)
+
+简单的线性dp。[Cdoe](./nowcoder/牛客周赛-Round-88/E.cpp)
+
+[**F. 秘藏**](https://ac.nowcoder.com/acm/contest/106318/F)
+
+简单构造，可以看看怎么实现的。[Code](./nowcoder/牛客周赛-Round-88/F.cpp)
+
+[**G. 升！龙！**](https://ac.nowcoder.com/acm/contest/106318/G)
+
+Tag: st表，dfn
+
+注意到 `max` 的单调性，可以把问题转化为对所有点的《根节点到该点的权值和》的 `max`
+
+当我在执行一次操作的时候，只有一棵子树的答案发生了 `+x` 的操作，使用 `dfn` 将子树转化为区间，再用st表解决区间查询问题。
+
+[Code](./nowcoder/牛客周赛-Round-88/G.cpp)

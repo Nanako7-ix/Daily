@@ -7,13 +7,21 @@ using i64 = long long;
 using u32 = unsigned;
 using u64 = unsigned long long;
 
-template<typename Iterator, typename T = std::iterator_traits<Iterator>::value_type>
+// use QuickSort in Sort.hpp to sort the list
+// return the k-th element
+template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 T AfterSort(Iterator l, Iterator r, u64 k) {
     QuickSort(l, r);
     return *(l + k - 1);
 }
 
-template<typename Iterator, typename T = std::iterator_traits<Iterator>::value_type>
+
+// use first k elements to make a heap
+// the heap is the least k elements
+// when an element insert
+// if it less than the greatest element
+// swap them
+template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 T MaintainHeap(Iterator l, Iterator r, u64 k) {
     std::vector<T> heap(l, l + k);
     std::make_heap(heap.begin(), heap.end());
@@ -27,7 +35,11 @@ T MaintainHeap(Iterator l, Iterator r, u64 k) {
     return heap[0];
 }
 
-template<typename Iterator, typename T = std::iterator_traits<Iterator>::value_type>
+
+// m is the bound of element
+// store all elements in the bucket
+// find the first position that suffix sum greater than k
+template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 T OpenBucket (Iterator l, Iterator r, u64 k) {
     T m = *std::max_element(l, r);
     std::vector<T> cnt(m + 1);
@@ -39,11 +51,18 @@ T OpenBucket (Iterator l, Iterator r, u64 k) {
         now += cnt[i];
         if(now >= k) return i;
     }
+    // if k <= n, can't reach
+    return -1;
 }
 
-template<typename Iterator, typename T = std::iterator_traits<Iterator>::value_type>
+
+// initial poivt is l
+// check the order of poivt
+// if order == k return poivt
+// if order > k, solve [l, poivt)
+// else solve (poivt, r)
+template<typename Iterator, typename T = typename std::iterator_traits<Iterator>::value_type>
 T QuickSelect (Iterator l, Iterator r, u64 k) {
-    assert(r - l != 0);
     if(r - l == 1) return *l;
     Iterator poivt;
     for(Iterator i = l, j = r - 1; i < j; ) {
@@ -53,9 +72,9 @@ T QuickSelect (Iterator l, Iterator r, u64 k) {
         std::iter_swap(i, j);
         if(i == j) poivt = i;
     }
-    u64 lft = poivt - l;
-    if(lft >= k) return QuickSelect(l, poivt, k);
-    if(lft == k - 1) return *poivt;
-    return QuickSelect(poivt + 1, r, k - lft - 1);
+    u64 order = poivt - l + 1;
+    if(order > k) return QuickSelect(l, poivt, k);
+    if(order == k) return *poivt;
+    return QuickSelect(poivt + 1, r, k - order);
 }
 #endif

@@ -10,7 +10,6 @@ using u64 = unsigned long long;
 // iter_swap: swap the elements pointed by two iterators
 // inplace_merge: merge two sorted interval in place
 
-// Selection Sort
 // [i, r) is unsorted interval
 // find the Minimum element in [i, r)
 // then swap it with *i
@@ -25,7 +24,6 @@ void SelectionSort(Iterator l, Iterator r) {
 }
 
 
-// Bubble Sort
 // [l, i) is unsorted interval
 // for all j in [l, i - 1), if element *j is greater than *(j + 1)
 // swap *j and *(j + 1)
@@ -41,7 +39,6 @@ void BubbleSort(Iterator l, Iterator r) {
 }
 
 
-// Insertion Sort
 // (i, r] is sorted interval
 // in order to insert *i to (i, r]
 // find the first element p that is greater than *i
@@ -59,7 +56,6 @@ void InsertionSort(Iterator l, Iterator r) {
 }
 
 
-// Merge Sort
 // [l, r) is unsorted interval
 // divide [l, r) into two subintervals [l, (l + r) / 2) and [(l + r) / 2, r)
 // sort the two subintervals
@@ -74,24 +70,23 @@ void MergeSort(Iterator l, Iterator r) {
 }
 
 
-// Quick Sort
 // [l, r) is unsorted interval
 // initial poivt is l
 // move all elements that are less than *p to the left of p
 // move all elements that are greater than *p to the right of p
-// divide [l, r) into two subintervals [l, p) and [p, r)
+// divide [l, r) into two subintervals [l, p) and (p, r)
 // sort the two subintervals
 template<typename Iterator>
 void QuickSort(Iterator l, Iterator r) {
     if(r - l <= 1) return;
+    Iterator poivt;
     for(Iterator i = l, j = r - 1; i < j; ) {
         while(i - j < 0 && *i <= *j) --j;
         std::iter_swap(i, j);
         while(i - j < 0 && *i <= *j) ++i;
         std::iter_swap(i, j);
-        if(i == j) {
-            QuickSort(l, i), QuickSort(i + 1, r);
-        }
+        if(i == j) poivt = i;
     }
+    QuickSort(l, poivt), QuickSort(poivt + 1, r);
 }
 #endif
