@@ -35,7 +35,11 @@ u64 testTopK (
     const u32 MaxTest = 20
 ) {
     i64 sum = 0;
-    std::cout << "\n[                    ]  0 %";
+    std::cout << "\n[";
+    for(int i = 1; i <= MaxTest; ++i) {
+        std::cout << ' ';
+    }    
+    std::cout << "]  0 %";
     std::cout.flush();
     for(u32 T = 1; T <= MaxTest; ++T) {
         auto [a, k] = random_TopK(n, V, Hitbound);
