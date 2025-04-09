@@ -342,3 +342,57 @@ CF Rating: 1600
 发现第一种方案其实是缓兵之计，并不能根本地解决问题，如果遇到前面的位也是一样就寄了。那么总结一下，前面一样，这位一样都是 $1$，后面也都一样，所以 $x = y$。也就是当且仅当 $x = y$ 不存在构造方案。
 
 [Code](./Codeforces/2085/2085C.cpp)
+
+### div 3(2093)
+
+[**A. Ideal Generator**](https://codeforces.com/contest/2093/problem/A)
+
+水题，如果是奇数一定可以，否则一定不可以，[Code](./Codeforces/2093/2093A.cpp)
+
+[**B. Expensive Number**](https://codeforces.com/contest/2093/problem/B)
+
+容易发现最终需要构造一个个位数（可能含前导零），这种情况下的代价为 $1$，其他的情况代价一定大于 $1$，所以考虑怎么删。贪心地想，前导零是可以不用删的，但是后置的零是需要删的，所以需要让后置的零尽可能小。那么留下的个位数一定是最后一个数，直接模拟一下就能算答案了。
+
+[Code](./Codeforces/2093/2093B.cpp)
+
+[**C. Simple Repetition**](https://codeforces.com/contest/2093/problem/C)
+
+容易想到，$y = 10101 \cdot x$，其中 $10101$ 只是一个虚值的数，实际上可能是 $11$, $1001001$ 之类的。那么你可能会想：只有 $k = 1$ 的情况下判一下 $x$ 是非为素数，如果是素数就是 YES，否则是 NO。但是实际上还需要判 $x = 1$ 的情况，唉。
+
+[Code](./Codeforces/2093/2093C.cpp)
+
+[**D. Skibidi Table**](https://codeforces.com/contest/2093/problem/D)
+
+Tag: 模拟
+
+这个递归的过程非常有趣，而且还能学一下怎么写模拟。算是这场比较有好的题了。[Code](./Codeforces/2093/2093D.cpp)
+
+[**E. Min Max MEX**](https://codeforces.com/contest/2093/problem/E)
+
+Tag: 二分
+
+最小值最大，关键词触发了。二分答案板子题。[Code](./Codeforces/2093/2093E.cpp)
+
+[**F. Hackers and Neural Networks**](https://codeforces.com/contest/2093/problem/F)
+
+没见过这么水的 div3F，直接贪心做完了。取重合度最大的数组使用第一种操作 $n$ 次，每个不符合的位置花 $2$ 点代价替换掉。[Code](./Codeforces/2093/2093F.cpp)
+
+[**G. Shorten the Array**](https://codeforces.com/contest/2093/problem/G)
+
+Tag: 01Trie
+
+显然可以贪心得到结论：如果 $i, j$ 满足 $a(i) \oplus a(j)$，那么可以向 $ans$ 提供贡献：$ans = min(ans, j - i + 1)$。枚举左端点，01trie 维护 $[l, n]$ 中的数字。将整个01trie 异或上一个 $a(l)$，那么 01trie 表示的就是所以 $a(i) \oplus a(r)$ 的值。找到满足值大于等于 $k$ 的最小的下标即可。字典树维护一下下标出现的最小值就行了，像线段树一样写一个info合并。
+
+为了不删点，可以考虑从右往左枚举左端点。时间复杂度 $O(n \log V)$。
+
+[Code](./Codeforces/2093/2093G.cpp)
+
+### [2085D](https://codeforces.com/contest/2085/problem/D)
+
+Tag: 反悔贪心
+
+CF Rating: 2000
+
+反悔贪心是一个比较容易想出来的思路，但是如果你是正着枚举的，那么你在反悔的时候，减小的代价是不容易确定的。因为如果是你删除堆中下标最小的元素，那么减小的代价是 $k$，否则是 $k + 1$。
+
+如果你选择倒着枚举，那么减小的代价一定是 $k + 1$，这样是容易计算的。
