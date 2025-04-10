@@ -1,5 +1,4 @@
 import socket
-import threading
 from concurrent.futures import ThreadPoolExecutor
 
 HOST = '0.0.0.0'
@@ -7,6 +6,8 @@ PORT = 8080
 
 def handle(client: socket.socket, addr: tuple[str, int]):
     print(addr, 'connected.')
+    tip_message = 'connected successfully!\nif you want to exit, enter \'exit\'\n'
+    client.sendall(tip_message.encode('utf-8'))
 
     while True:
         data = client.recv(1024)
@@ -14,6 +15,8 @@ def handle(client: socket.socket, addr: tuple[str, int]):
             break
         message = data.decode('utf-8')
         if message.startswith('exit'):
+            tip_message = 'press \'ENTER\' to exit\n'
+            client.sendall(tip_message.encode('utf-8'))
             break
         print(addr, ': ' + message)
         message = 'echo ' + message
@@ -28,6 +31,8 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server:
     server.listen()
 
     with ThreadPoolExecutor(max_workers = 100) as pool:
-        while True:
+        cnt = 1
+        while cnt != 0:
             client, addr = server.accept()
             pool.submit(handle, client, addr)
+            cnt -= 1
