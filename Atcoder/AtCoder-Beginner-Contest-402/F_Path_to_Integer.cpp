@@ -181,9 +181,16 @@ void solve() {
         dfs(dfs, i, j + 1, now + a[i][j + 1]);
     };
 
+    m32 ans = 0;
     auto dfs2 = [&](auto &&dfs, int i, int j, m32 now) {
         if (i + j == n + 1) {
-            g[i].push_back(now);
+            now -= a[i][n + 1 - i];
+            auto it = lower_bound(f[i].begin(), f[i].end(), m - now);
+            if (it != f[i].begin()) {
+                ans = max(ans, now + *prev(it));
+            } else {
+                ans = max(ans, now + f[i].back());
+            }
             return;
         }
         dfs(dfs, i - 1, j, now + a[i - 1][j]);
@@ -191,22 +198,11 @@ void solve() {
     };
 
     dfs1(dfs1, 1, 1, a[1][1]);
+    for (int i = 1; i <= n; ++i) {
+        sort(f[i].begin(), f[i].end());
+    }
     dfs2(dfs2, n, n, a[n][n]);
 
-    m32 ans = 0;
-    for (int i = 1; i <= n; ++i) {
-        sort(g[i].begin(), g[i].end());
-        for (auto x : f[i]) {
-            x -= a[i][n + 1 - i];
-            auto it = lower_bound(g[i].begin(), g[i].end(), m - x);
-            if (it != g[i].begin()) {
-                ans = max(ans, x + *prev(it));
-            } else {
-                ans = max(ans, x + g[i].back());
-            }
-        }
-        cout << endl;
-    }
     cout << ans << endl;
 }
 
