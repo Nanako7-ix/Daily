@@ -448,3 +448,162 @@ Rating: 2100
 很好的思维题，如果考虑构造一个满足条件的排列感觉是很难的。如果考虑倒着处理，把 `insert` 变成 `erase`，那么 `>` 就是删除最大值，`<` 就是删除最小值。否则删除既不是最大也不是最小的值，那么方案数就能计算了。
 
 [Code](./Codeforces/1886/1886D.cpp)
+
+### AtCoder Beginner Contest 401
+
+[**A**](https://atcoder.jp/contests/abc401/tasks/abc401_a)
+
+签到, [Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/A_Status_Code.cpp)
+
+[**B**](https://atcoder.jp/contests/abc401/tasks/abc401_b)
+
+模拟, [Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/B_Unauthorized.cpp)
+
+[**C**](https://atcoder.jp/contests/abc401/tasks/abc401_c)
+
+求 k 项递推的斐波那契数列，直接一边计算，一边维护一个前缀和数组就行了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/C_K_bonacci.cpp)
+
+[**D**](https://atcoder.jp/contests/abc401/tasks/abc401_d)
+
+模拟+分讨
+
+你需要知道什么时候是可以把一个 `?` 给确定出来的。首先 `o` 旁边跟着的一定是 `.`，这个是明显可以确定出来的，使用的是第二个条件。
+
+还有第一个条件没用，如果剩下的位置只能填 `.`，也就是 `o` 的数量已经够了，这时候 `?` 是全都可以确定出来的。然后再看一下剩下的位置还能填多少个 `o`，如果这个最大填充个数都需要填上，那么说明也可以确定一些东西。否则的话，一定是剩下的 `?` 都不能确定。
+
+考虑如何放最多的 `o`。首先 `?` 段的左右两端一定是 `.` 或者边界，所以如果是奇数段，最大可能的填充是 `o.o.o.o.o`。如果是偶数段，最大填充是 `o.o.o.o.` 或者 `.o.o.o.o`。
+
+所以在确定最大填充之后，奇数段可以确定，偶数段不能确定。模拟就行了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/D_Logical_Filling.cpp)
+
+[**E**](https://atcoder.jp/contests/abc401/tasks/abc401_e)
+
+最短路 + 模拟。
+
+考虑一个点集，先不考虑它们的连通性，我们让：从这个点集中任意一点出发，不会抵达点集外的点，至少需要删除多少个点。这个是容易考虑的，假设 $u$ 是点集中一点，$v$ 是 $u$ 的一个出点，且 $v$ 不在点集中，那么这个 $v$ 是必删的。如果把所有这样的 $v$ 删掉，容易证明不可能到达点集外的点，所以只需要使用一个集合维护需要删点即可。
+
+如何维护：每次新加入一个点，先将这个点从集合中删除。然后由于前面的点已经讨论过了，它们是一定符合条件的，所以只需要枚举该点的出点，将不符合的点插入集合中即可。时间复杂度 $O(m \log n)$，因为出点一共是 $m$ 个，是个经典的限制。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/E_Reachable_Set.cpp)
+
+[**F**](https://atcoder.jp/contests/abc401/tasks/abc401_f)
+
+Tag: 树的直径，换根dp
+
+考虑如何计算 $f(i, j)$，那么需要考虑找哪些路径是最长的。如果路径经过了中间加上的那条边，那么这种边中最长的路径一定是：左树中距离 $i$ 最远的距离 + $1$ + 右树中距离 $j$ 最远的距离。如果不经过中间加上的那条边，那么一定是两棵树的直径的最大值。
+
+预处理出每个点的最远距离，然后枚举 $i$，计算对于每个 $j$ 的贡献，就做完了。预处理的方式是换根 dp，维护最大和次大的不重合的路径。
+
+然后开桶记录出现次数和元素和，做一个前缀和就行了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/F_Add_One_Edge_3.cpp)
+
+[**G**](https://atcoder.jp/contests/abc401/tasks/abc401_g)
+
+Tag: 二分、网络流
+
+首先可以二分找答案，然后对于每次 `check(x)`，需要判断是否只可以使用小于等于 $x$ 的边就能就能达成完美匹配。那么直接建立最大流，跑一下最大匹配，判断是否为 $n$ 即可。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-401(AK)/G_Push_Simultaneously.cpp)
+
+### Codeforces Round 1017 (Div. 4)
+
+> 赛时ak
+
+[**A. Trippi Troppi**](https://codeforces.com/contest/2094/problem/A)
+
+水题，输出三个字符串的首字母。[Code](./Codeforces/2094/2094A.cpp)
+
+[**B. Bobritto Bandito**](https://codeforces.com/contest/2094/problem/B)
+
+模拟。不考虑 $0$ 一定在区间内，那么初始区间可以是 $[l, r - n + m]$。范围很小，如果 $0 > r - n + m$，直接 `++l, ++r` 暴力即可。[Code](./Codeforces/2094/2094B.cpp)
+
+或者，你也可以直接推出一个答案为 $[\max(l - r + n - m, l), \max(0, r - n + m)]$
+
+[**C. Brr Brrr Patapim**](https://codeforces.com/contest/2094/problem/C)
+
+按题意模拟即可。[Code](./Codeforces/2094/2094C.cpp)
+
+[**D. Tung Tung Sahur**](https://codeforces.com/contest/2094/problem/D)
+
+其实还是可以模拟，每次按段拿，然后看数量上能不能对应。[Code](./Codeforces/2094/2094D.cpp)
+
+[**E. Boneca Ambalabu**](https://codeforces.com/contest/2094/problem/E)
+
+想字典树暴力？还是早点和数据结构切割了，和 ew 一样用多了目光呆滞。
+
+考虑枚举 $k \in [1, n]$，然后考虑对 $a_k$ 按位处理。对于 $a_k$ 某一位，如果是 $0$，那么不会对 $sum$ 产生影响。否则会把这一位上的 $01$ 互换，预处理出 $01$ 数量之后就能计算出异或后的答案。
+
+[Code](./Codeforces/2094/2094E.cpp)
+
+[**F. Trulimero Trulicina**](https://codeforces.com/contest/2094/problem/F)
+
+构造。考虑最直接的构造方法，$1, 2, \cdots, k, 1, 2, \cdots$ 地放过去。这样左右两个数是一定不相同的，那么只需要考虑上下。上下两个数之间差了 $m$ 个数，那么上下两个数相等当且仅当 $m \bmod k \equiv 0$。这种情况下可以构造 `shift` 式的方案，这种思路还是挺常见的，矩阵如下：
+
+$$
+\left [
+\begin{matrix}
+1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4}\\
+\blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1\\
+\red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2}\\
+\green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3}\\
+\end{matrix}
+\right ]
+$$
+
+[Code](./Codeforces/2094/2094F.cpp)，预计 Rating: 1700
+
+[**G. Chimpanzini Bananini**](https://codeforces.com/contest/2094/problem/G)
+
+简单解法是：双端队列 `deque`，但是这能忍住不用平衡树的也是神人了，只需要维护全局和即可。
+
+[Code](./Codeforces/2094/2094G.cpp)，预计 Rating: 1900
+
+[**H. La Vaca Saturno Saturnita**](https://codeforces.com/contest/2094/problem/H)
+
+水完了，直接暴力就能过。暴力找第一个能让 $k$ 减小的位置，只需要枚举因子，然后二分找位置。时间复杂度 $O(\sqrt{k}\log n)$，由于最多跳 $\omega (k)$ 次，所以其实操作次数挺少的。时间复杂度 $O(q\cdot\omega(k)\cdot\sqrt{k}\log n)$。
+
+埃式筛预处理一下能把 $\sqrt{k}$ 优化成 $d(k)$。太水了吧。
+
+[Code](./Codeforces/2094/2094G.cpp)，预计 Rating: 2000
+
+### 4.15
+
+[**1883A**](https://codeforces.com/problemset/problem/1883/A)
+
+水一题呜呜。[Code](./1883A.cpp)
+
+[**497E**](https://codeforces.com/problemset/problem/487/E)
+
+Tag: 圆方树，树链剖分，线段树，一个很常见的 `trick`
+
+CF Rating: 3200
+
+[Code](./487E.cpp)
+
+### AtCoder Beginner Contest 402
+
+[**A. CBC**](https://atcoder.jp/contests/abc402/tasks/abc402_a)
+
+输出字符串中的大小字母，有一个判大写的函数是 `isupper(x)`。[Code](./Atcoder/AtCoder-Beginner-Contest-402/A_CBC.cpp)
+
+[**B. Restaurant Queue**](https://atcoder.jp/contests/abc402/tasks/abc402_b)
+
+队列模拟。[Code](./Atcoder/AtCoder-Beginner-Contest-402/B_Restaurant_Queue.cpp)
+
+[**C. Dislike Foods**](https://atcoder.jp/contests/abc402/tasks/abc402_c)
+
+开桶模拟。[Code](./Atcoder/AtCoder-Beginner-Contest-402/C_Dislike_Foods.cpp)
+
+[**D. Line Crossing**](https://atcoder.jp/contests/abc402/tasks/abc402_d)
+
+每次添加一根线，判断有多少根已经加入的直线，与当前直线相交。相交就是不平行，注意到平行直线的性质：如果一条直线是由 $u, v$ 两个点确定的，那么满足 $u + v \bmod n = c$ 的直线族平行。于是开桶维护即可。[Code](./Atcoder/AtCoder-Beginner-Contest-402/D_Line_Crossing.cpp)
+
+[**E. Payment Required**](https://atcoder.jp/contests/abc402/tasks/abc402_e)
+
+我猜不能贪心，所以考虑状压dp。其实这个dp的思路我写的很怪
+
+[**F. Path to Integer**]
