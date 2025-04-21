@@ -546,10 +546,10 @@ Tag: 二分、网络流
 $$
 \left [
 \begin{matrix}
-1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4}\\
-\blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1\\
-\red{3} & \green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2}\\
-\green{4} & 1 & \blue{2} & \red{3} & \green{4} & 1 & \blue{2} & \red{3}\\
+1 & 2 & 3 & 4 & 1 & 2 & 3 & 4\\
+2 & 3 & 4 & 1 & 2 & 3 & 4 & 1\\
+3 & 4 & 1 & 2 & 3 & 4 & 1 & 2\\
+4 & 1 & 2 & 3 & 4 & 1 & 2 & 3\\
 \end{matrix}
 \right ]
 $$
