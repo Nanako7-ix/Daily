@@ -604,6 +604,25 @@ CF Rating: 3200
 
 [**E. Payment Required**](https://atcoder.jp/contests/abc402/tasks/abc402_e)
 
-我猜不能贪心，所以考虑状压dp。其实这个dp的思路我写的很怪
+我猜不能贪心，所以考虑状压dp。其实这个dp的思路我写的很怪，$dp(msk, rest)$ 表示考虑 $msk$ 中的题目，然后手上只有 $rest$ 这么多钱，所能获得的最大分数。那么显然最终答案应该是 $dp(2^n - 1, m)$，下面考虑转移。
+
+我现在需要求 $dp(msk, rest)$，我需要枚举我接下来做的第一道题，显然这道题需要在集合中。然后这题可能过，也可能不过。如果过了，那么就只需要考虑剩下的题目，否则需要考虑的题目的集合不变。同时剩余的钱减少相应的费用。那么转移方程为：
+
+```cpp
+// c(i) 表示第 i 题的花费
+// p(i) 表示第 i 题的概率
+// s(i) 表示第 i 题的得分
+for (int i = 1; i <= n; ++i) {
+    if ((msk >> (i - 1) & 1) == 0) {
+        continue;
+    }
+    if (rest - c(i) < 0) continue;
+    dp[msk][rest] = max(
+        dp[msk][rest],
+        (1 - p(i)) * dp[msk][rest - c(i)]
+      + p(i) * (dp[msk ^ (1 << (i - 1))][rest - c(i)] + s(i))
+    );
+}
+```
 
 [**F. Path to Integer**]
