@@ -600,9 +600,13 @@ CF Rating: 3200
 
 [**D. Line Crossing**](https://atcoder.jp/contests/abc402/tasks/abc402_d)
 
-每次添加一根线，判断有多少根已经加入的直线，与当前直线相交。相交就是不平行，注意到平行直线的性质：如果一条直线是由 $u, v$ 两个点确定的，那么满足 $u + v \bmod n = c$ 的直线族平行。于是开桶维护即可。[Code](./Atcoder/AtCoder-Beginner-Contest-402/D_Line_Crossing.cpp)
+每次添加一根线，判断有多少根已经加入的直线，与当前直线相交。相交就是不平行，注意到平行直线的性质：如果一条直线是由 $u, v$ 两个点确定的，那么满足 $u + v \bmod n = c$ 的直线族平行。于是开桶维护即可。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-402/D_Line_Crossing.cpp)
 
 [**E. Payment Required**](https://atcoder.jp/contests/abc402/tasks/abc402_e)
+
+Tag: 状压dp，期望dp
 
 我猜不能贪心，所以考虑状压dp。其实这个dp的思路我写的很怪，$dp(msk, rest)$ 表示考虑 $msk$ 中的题目，然后手上只有 $rest$ 这么多钱，所能获得的最大分数。那么显然最终答案应该是 $dp(2^n - 1, m)$，下面考虑转移。
 
@@ -625,4 +629,10 @@ for (int i = 1; i <= n; ++i) {
 }
 ```
 
-[**F. Path to Integer**]
+[Code](./Atcoder/AtCoder-Beginner-Contest-402/E_Payment_Required.cpp)
+
+[**F. Path to Integer**](https://atcoder.jp/contests/abc402/tasks/abc402_f)
+
+Tag: 双端搜索
+
+首先可以预处理一下，求出
