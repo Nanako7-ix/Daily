@@ -642,3 +642,91 @@ Tag: 双端搜索
 显然将两个集合合并求解，可以用经典思路枚举一个集合，然后二分另外一个集合来优化。这样的时间复杂度是 $O(|s|\log |t|)$ 的。那么总时间复杂度为 $O(2^{n + 1}\sum\limits_{i = 0} ^ n \binom{2n-2}{n-1}\log \binom{2n-2}{n-1})$。
 
 [Code](./Atcoder/AtCoder-Beginner-Contest-402/F_Path_to_Integer.cpp)
+
+### AtCoder Beginner Contest 403
+
+[**A. AtCoder Beginner Contest 403**](https://atcoder.jp/contests/abc403/tasks/abc403_a)
+
+模拟，扫一遍就行了，[Code](./Atcoder/AtCoder-Beginner-Contest-403/A_Odd_Position_Sum.cpp)
+
+[**B. Four Hidden**](https://atcoder.jp/contests/abc403/tasks/abc403_b)
+
+暴力匹配以下就行了，[Code](./Atcoder/AtCoder-Beginner-Contest-403/B_Four_Hidden.cpp)
+
+[**C. 403 Forbidden**](https://atcoder.jp/contests/abc403/tasks/abc403_c)
+
+还是一个 `set` 模拟，就是有什么操作就做什么操作的标记就行了。[Code](./Atcoder/AtCoder-Beginner-Contest-403/C_403_Forbidden.cpp)
+
+[**D. Forbidden Difference**](https://atcoder.jp/contests/abc403/tasks/abc403_d)
+
+不能出现差值为 $d$ 的数，并且注意到值域为 $10^6$，那么直接开桶，然后模 $d$ 分组做就行了。**注意特判 $\bold{d=0}$ 的情况**。[Code](./Atcoder/AtCoder-Beginner-Contest-403/D_Forbidden_Difference.cpp)
+
+[**E. Forbidden Prefix**](https://atcoder.jp/contests/abc403/tasks/abc403_e)
+
+捕获到关键词：前缀匹配。那么使用字典树。
+
+套字典树板子就行了，字典树还是写得不熟，调了一亿年。[Code](./Atcoder/AtCoder-Beginner-Contest-403/E_Forbidden_Prefix.cpp)
+
+[**F. Shortest One Formula**](https://atcoder.jp/contests/abc403/tasks/abc403_f)
+
+我写的是DP，但是似乎写个类似于 `dijkstra` 的贪心也是对的。直接对于每个数字设置三个状态，表示构造出这个数字的三种情况的最短字符串的长度。这三种情况分别表示：直接全 $1$ 构成数字，最后一步使用加法构造，最后一步使用乘法构造。然后随便枚举一下 dp 就行了，时间复杂度给的很松，$n^2$ 乱草都能过，然后转移的时候记录一下从哪个状态转移过来的就行。
+
+求出最短的字符串的长度还是简单的，但是这题还需要输出字符串，这个构造有点麻烦，我写了一坨。[Code](./Atcoder/AtCoder-Beginner-Contest-403/F_Shortest_One_Formula.cpp)
+
+[**G. Odd Position Sum Query**](https://atcoder.jp/contests/abc403/tasks/abc403_g)
+
+这是板子啊，动态开点线段树或者平衡树都能过。开少了一个 `long long` 调了一亿年。[DynamicSegmentTree](./Atcoder/AtCoder-Beginner-Contest-403/G_DynamicSegmentTree.cpp) 和 [FHQ-Treap](./Atcoder/AtCoder-Beginner-Contest-403/G_FHQ_Treap.cpp)
+
+### AtCoder Beginner Contest 405
+
+[**A. Is it rated?**](https://atcoder.jp/contests/abc405/tasks/abc405_a)
+
+按题意模拟即可。[Code](./Atcoder/AtCoder-Beginner-Contest-405/A_Is_it_rated.cpp)
+
+[**B. Not All**](https://atcoder.jp/contests/abc405/tasks/abc405_b)
+
+暴力枚举。[Code](./Atcoder/AtCoder-Beginner-Contest-405/B_Not_All.cpp)
+
+[**C. Sum of Product**](https://atcoder.jp/contests/abc405/tasks/abc405_c)
+
+显然：
+
+$$
+\sum\limits_{i = 1}^{n}\sum\limits_{j = i + 1}^{n}a_ia_j=\frac{1}{2}\sum\limits_{i = 1}^{n}a_i(\sum\limits_{j = 1}^{n}a_j-a_i)
+$$
+
+就做完了。[Code](./Atcoder/AtCoder-Beginner-Contest-405/C_Sum_of_Product.cpp)
+
+[**D. Escape Route**](https://atcoder.jp/contests/abc405/tasks/abc405_d)
+
+从一个点 $(i, j)$ 到达 `E` 点，求最短路并且求出路径。这看起来不是很好做啊，但是你可以把它反过来，也就是求 `E` 到 $(i, j)$ 的最短路径。这个直接 `bfs` 做完了。[Code](./Atcoder/AtCoder-Beginner-Contest-405/D_Escape_Route.cpp)
+
+[**E. Fruit Lineup**](https://atcoder.jp/contests/abc405/tasks/abc405_e)
+
+一条一条规则考虑，只考虑第一条，那么一定是左边的全是苹果，右边全是香蕉。加上第二条规则，左边全是苹果，右边是香蕉和葡萄混合的情况。考虑第三条，橙子和第一个葡萄左边的部分混在一起。
+
+前两条规则都比较好做，加入第三条之后怎么计算呢，可以考虑枚举第一个葡萄的左边有多少香蕉，因为这是前两条规则唯一的变化。
+
+然后考虑现在是这样的情况：$a$ 个苹果，然后 $i$ 个香蕉，然后接着是一个葡萄，然后是香蕉和葡萄混在一起的情况。那么你现在需要在第一个葡萄的左边加入 $o$ 个橙子，这部分的方案数计算出来是 $x$，然后右边香蕉和葡萄混在一起的方案数是 $y$，那么最终的答案就是 $\sum xy$。
+
+考虑计算 $x$，由于你需要在 $a + i + 1$ 个箱子的情况下放入 $o$ 个物品，那么可以隔板法计算出：
+
+$$
+x = C_{n + e - 1}^{n - 1} = C_{a + i + o}^{a + i}
+$$
+
+至于右边的部分就容易看出来，方案数是：
+
+$$
+y = \frac{A_{g + b - i - 1}^{g + b - i - 1}}{A_{b - i}^{b - i}\cdot A_{g - 1}^{g - 1}}
+$$
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-405/E_Fruit_Lineup.cpp)
+
+[**F. Chord Crossing**](https://atcoder.jp/contests/abc405/tasks/abc405_f)
+
+Tag: 二维偏序
+
+判断线段 $[L, R]$ 是否与线段 $[l, r]$ 相交，只需要判断是否有 $l < L < r < R$ 或者是 $L < l < R < r$。这两种情况不可能同时出现，所以只需要分别处理这两种情况。然后答案之和就是答案。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_2D.cpp)
+
+然后还有一种很涩的，支持在线，支持修改线段判定集的解法：线段树分治套平衡树。这个解法的时间复杂度是 $O(n\log^2n)$ 在这题是会 T 最后四个点的。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_SegmentTree_pbds.cpp)
