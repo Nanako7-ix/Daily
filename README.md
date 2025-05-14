@@ -759,12 +759,10 @@ Tag: 二维偏序
 
 $$
 dp(i, j) =
-\left \{
-\begin{aligned}
+\begin{cases}
 &\sum_{k = 1}^{\max(a)}dp(i - 1, k) - dp(i - 1, j)&j\leq a_i\\
 &0 &j \gt a_i
-\end{aligned}
-\right .
+\end{cases}
 $$
 
 这个转移方程长得就很像线段树，只需要写一个支持区间加区间乘的线段树即可。然后因为 $\max(a)$ 很大，所以需要做一遍离散化。
