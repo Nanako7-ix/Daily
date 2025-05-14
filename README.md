@@ -729,7 +729,7 @@ Tag: 二维偏序
 
 判断线段 $[L, R]$ 是否与线段 $[l, r]$ 相交，只需要判断是否有 $l < L < r < R$ 或者是 $L < l < R < r$。这两种情况不可能同时出现，所以只需要分别处理这两种情况。然后答案之和就是答案。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_2D.cpp)
 
-然后还有一种很涩的，支持在线，支持修改线段判定集的解法：线段树分治套平衡树。这个解法的时间复杂度是 $O(n\log^2n)$ 在这题是会 T 最后四个点的。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_SegmentTree_pbds.cpp)
+然后还有一种很涩的，支持在线，支持修改线段判定集的解法：线段树分治套平衡树。这个解法的时间复杂度是 $O(n\log^2n)$ 在这题是会 T 第 $30$ 个点的，不知道为什么这个点怎么这么强，怎么卡都卡不过去。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_SegmentTree_pbds.cpp)
 
 ### SZUACM dp训练
 
