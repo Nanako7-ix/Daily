@@ -730,3 +730,43 @@ Tag: 二维偏序
 判断线段 $[L, R]$ 是否与线段 $[l, r]$ 相交，只需要判断是否有 $l < L < r < R$ 或者是 $L < l < R < r$。这两种情况不可能同时出现，所以只需要分别处理这两种情况。然后答案之和就是答案。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_2D.cpp)
 
 然后还有一种很涩的，支持在线，支持修改线段判定集的解法：线段树分治套平衡树。这个解法的时间复杂度是 $O(n\log^2n)$ 在这题是会 T 最后四个点的。[Code](./Atcoder/AtCoder-Beginner-Contest-405/F_SegmentTree_pbds.cpp)
+
+### SZUACM dp训练
+
+#### 题单
+
+#### 训练赛
+
+[**B**](https://vjudge.net/contest/716506#problem/B) 题，这个还挺签到的，直接维护需要多少个数，如果不够的话就往后面借，有点像减法竖式计算。[Code](./SZUACM/dp/训练赛/B_子集_mex.cpp)
+
+[**A**](https://vjudge.net/contest/716506#problem/A) 题，$dp(i, j)$ 表示考虑前 $i$ 个字符，存在的子序列能匹配 `hard` 的最长前缀长度为 $j$ 的最小代价，想清楚转移直接 dp 就行了。这个转移没想清楚直接趋势了qwq。[Code](./SZUACM/dp/训练赛/A_Easy_Problem.cpp)
+
+[**C**](https://vjudge.net/contest/716506#problem/C) 题，直接计算答案是不好计算的，但是可以这样考虑：我操作一次之后，由于 $2^{1000}$ 以内的数的 `popcount` 一定小于等于 $1000$，那么经过一次操作之后 $x$ 就会减小至 $1000$ 以内。这个时候直接枚举 $1000$ 以内的数字，有哪些数是需要 $k - 1$ 次操作的。如果 $x$ 降到 $1$ 所需要的操作为 $k - 1$ 次，那么所有 `popcount` 为 $x$ 的数都是符合条件的。由于我们是按照 `popcount` 来分类的，所以不会出现重复计算的情况。
+
+但是需要**注意**的是，如果 $k = 1$，那么 $f(x) = 0$ 的数只有 $1$，也就是需要找 `popcount` 为 $1$ 的数字。这个时候，需要排除 $1$ 本身。然后再特判一下 $k = 0$ 的情况下输出 $1$ 即可。
+
+如何计算小于 $n$ 的数字中有多少个数字的 `popcount` 恰好为 $k - 1$ 呢，这个可以使用数位dp来解决，记忆化搜索式的写法的数位dp是这样写的，实际上就是暴力搜索每一位的取值情况，然后加个记忆化就行了。
+
+[Code](./SZUACM/dp/训练赛/C_Travelling_Salesman_and_Special_Numbers.cpp)
+
+这里挖一个坑，学习一下递推式的数位dp写法。
+
+[**D**](https://vjudge.net/contest/716506#problem/D) 题，这题首先贪心是不正确的。我们令 $dp(i, j)$ 为背包容量恰好为 $i$，并且物品价值异或和为 $j$ 的情况是否可能出现。那么 $dp$ 数组的大小为 $mV$，也就是 $10^6$，那么时间复杂度为 $O(nmV)$，是 $10^9$，这个直接做肯定寄了，所以可以考虑时候 `bitset` 优化。我一开始其实还挺看不上 bitset 的，感觉是卡常用的，太玄学了。但实际上，bitset可以优化整整一个 $\log$，还是非常强的。
+
+[Code](./SZUACM/dp/训练赛/D_Backpack.cpp)
+
+[**E**](https://vjudge.net/contest/716506#problem/E) 题，设 $dp(i, j)$ 为考虑前 $i$ 个数，以 $j$ 结尾的方案数，显然有转移方程：
+
+$$
+dp(i, j) =
+\left \{
+\begin{aligned}
+&\sum_{k = 1}^{\max(a)}dp(i - 1, k) - dp(i - 1, j)&j\leq a_i\\
+&0 &j \gt a_i
+\end{aligned}
+\right .
+$$
+
+这个转移方程长得就很像线段树，只需要写一个支持区间加区间乘的线段树即可。然后因为 $\max(a)$ 很大，所以需要做一遍离散化。
+
+[Code](./SZUACM/dp/训练赛/E_Non_equal_Neighbours.cpp)
