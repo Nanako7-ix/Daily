@@ -787,9 +787,7 @@ Tag: EDCC缩点，树形dp，换根dp
 
 ### 南昌邀请赛
 
-> 气晕了，铜牌rank3，很明显有机会拿金的结果连银都没有。
-> 为了更好的观看体验，给出我的体感 CF Rating 并按升序提供题解
-> 剩下
+> 气晕了，铜牌rank3，很明显有机会拿金的结果连银都没有。为了更好的观看体验，给出我的体感 CF Rating 并按升序提供题解
 
 #### [A. Nezha Naohai](https://codeforces.com/gym/105911/problem/A)
 
