@@ -823,7 +823,7 @@ CF Rating: 1600
 
 #### [F. Caloric Difference](https://codeforces.com/gym/105911/problem/F)
 
-CF Rating: 1700
+CF Rating: 1600
 
 因为CF没有纯推式子的题目，所以如果这个评分是体感难度，表示这题做起来大概像是做1600的感觉。这题给了一条公式 $c_i = p \cdot c_{i - 1} + (1-p) \cdot r_{i - 1}$，所以我们考虑能不能通过递推，使用 $r$ 表示出 $c_i$。
 
