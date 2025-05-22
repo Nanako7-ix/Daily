@@ -829,11 +829,11 @@ CF Rating: 1600
 
 $$
 \begin{aligned}
-c_1 &= p\cdot c_0+(1-p)\cdot r_0\\
-c_2 &= p\cdot c_1+(1-p)\cdot r_1\\
-    &= p^2c_0 + (1-p)(r_1+pr_0)\\
-c_3 &= p\cdot c_2+(1-p)\cdot r_2\\
-    &= p^3c_0 + (1-p)(r_2 + pr_1+p^2r_0)\\
+c_1&= p\cdot c_0+(1-p)\cdot r_0\\
+c_2&= p\cdot c_1+(1-p)\cdot r_1\\
+   &= p^2c_0 + (1-p)(r_1+pr_0)\\
+c_3&= p\cdot c_2+(1-p)\cdot r_2\\
+   &= p^3c_0 + (1-p)(r_2 + pr_1+p^2r_0)\\
 &\dots\\
 c_k &= p^kc_0 + (1-p)\sum\limits_{i=0}^{k-1}p^{k-1-i}r_i
 \end{aligned}
@@ -844,9 +844,9 @@ $$
 $$
 \begin{aligned}
  &\sum\limits_{i = 1}^{n} c_i-r_i\\
-=\;& c_0\sum\limits_{i = 1}^{n} p^i+(1 - p)\sum\limits_{i = 1}^n\sum\limits_{j=0}^{i-1}p^{i-1-j}r_j-\sum\limits_{i = 1}^nr_i\\
-=\;& c_0\sum\limits_{i = 1}^{n} p^i+(1 - p)\sum\limits_{i = 0}^{n-1}(r_i\sum\limits_{j=0}^{n - 1 - i}p^{j})-\sum\limits_{i = 1}^nr_i\\
-=\;& c_0\sum\limits_{i = 1}^{n} p^i+\sum\limits_{i = 0}^{n-1}r_i((1 - p)\sum\limits_{j=0}^{n - 1 - i}p^{j} - 1) - r_n
+=& c_0\sum\limits_{i = 1}^{n} p^i+(1 - p)\sum\limits_{i = 1}^n\sum\limits_{j=0}^{i-1}p^{i-1-j}r_j-\sum\limits_{i = 1}^nr_i\\
+=& c_0\sum\limits_{i = 1}^{n} p^i+(1 - p)\sum\limits_{i = 0}^{n-1}(r_i\sum\limits_{j=0}^{n - 1 - i}p^{j})-\sum\limits_{i = 1}^nr_i\\
+=& c_0\sum\limits_{i = 1}^{n} p^i+\sum\limits_{i = 0}^{n-1}r_i((1 - p)\sum\limits_{j=0}^{n - 1 - i}p^{j} - 1) - r_n
 \end{aligned}
 $$
 
