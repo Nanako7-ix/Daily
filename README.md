@@ -913,3 +913,40 @@ CF Rating: 2600
 计算 $1 - u$ 链上深度最大的满足条件的点：倍增
 
 [Code](./南昌邀请赛/L.cpp)
+
+### 牛客周赛 93
+
+> 好久没打过牛牛了，今天不想写题，就随便写几题牛客，总体评价是非常水。
+
+#### [浪](https://ac.nowcoder.com/acm/contest/109904/A)
+
+签到喵。[Code](./nowcoder/牛客周赛-Round-93/浪.cpp)
+
+#### [漫](https://ac.nowcoder.com/acm/contest/109904/B)
+
+暴力找字串，暴力check。[Code](./nowcoder/牛客周赛-Round-93/漫.cpp)
+
+#### [至](https://ac.nowcoder.com/acm/contest/109904/C)
+
+一个比较思维的题目，体感大概在 1300 左右。显然曼哈顿距离相等的一定可行，否则需要让近的绕远路。绕远路的方式只有一种，这个对着代码模拟一下就知道怎么绕了。[Code](./nowcoder/牛客周赛-Round-93/至.cpp)
+
+#### [死](https://ac.nowcoder.com/acm/contest/109904/D)
+
+很贪心的题目啊，就是把大的数字全都堆到前面，如果有相等的数字，优先操作下标更大的。从写法上来说，对 id 排序是比较舒服的写法。[Code](./nowcoder/牛客周赛-Round-93/死.cpp)
+
+#### [不](https://ac.nowcoder.com/acm/contest/109904/E)
+
+直接随便玩一下就会发现只有两种情况符合条件：子序列中只有一种数，子序列中的数字为 $0, 1, 2, \cdots$。那么直接枚举做就行了，没什么难度喵。[Code](./nowcoder/牛客周赛-Round-93/不.cpp)
+
+#### [渝](https://ac.nowcoder.com/acm/contest/109904/F)
+
+想了个暴力，然后记搜过了。$dp(i, j, k)$ 表示从 $(i, j)$ 到 $(n - i + 1, k)$ 的这么多条路径中，有多少种路径是回文的。然后dp的转移方向只有这四种
+
+$$
+dp(i, j, k) \leftarrow dp(i + 1, j, k)\\
+dp(i, j, k) \leftarrow dp(i + 1, j + 1, k)\\
+dp(i, j, k) \leftarrow dp(i + 1, j, k - 1)\\
+dp(i, j, k) \leftarrow dp(i + 1, j + 1, k - 1)\\
+$$
+
+[Code](./nowcoder/牛客周赛-Round-93/渝.cpp)
