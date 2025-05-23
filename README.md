@@ -659,7 +659,7 @@ Tag: 双端搜索
 
 [**D. Forbidden Difference**](https://atcoder.jp/contests/abc403/tasks/abc403_d)
 
-不能出现差值为 $d$ 的数，并且注意到值域为 $10^6$，那么直接开桶，然后模 $d$ 分组做就行了。**注意特判 $\bold{d=0}$ 的情况**。[Code](./Atcoder/AtCoder-Beginner-Contest-403/D_Forbidden_Difference.cpp)
+不能出现差值为 $d$ 的数，并且注意到值域为 $10^6$，那么直接开桶，然后模 $d$ 分组做就行了。**注意特判 $d=0$ 的情况**。[Code](./Atcoder/AtCoder-Beginner-Contest-403/D_Forbidden_Difference.cpp)
 
 [**E. Forbidden Prefix**](https://atcoder.jp/contests/abc403/tasks/abc403_e)
 
