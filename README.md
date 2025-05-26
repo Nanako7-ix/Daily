@@ -951,6 +951,52 @@ $$
 
 [Code](./nowcoder/牛客周赛-Round-93/渝.cpp)
 
+### AtCoder Beginner Contest 407
+
+#### [A. Approximation](https://atcoder.jp/contests/abc407/tasks/abc407_a)
+
+模拟题，[Code](./Atcoder/AtCoder-Beginner-Contest-407/A_Approximation.cpp)
+
+#### [B. P(X or Y)](https://atcoder.jp/contests/abc407/tasks/abc407_b)
+
+暴力枚举所有情况，[Code](./Atcoder/AtCoder-Beginner-Contest-407/B_P_X_or_Y.cpp)
+
+#### [C. Security 2](https://atcoder.jp/contests/abc407/tasks/abc407_c)
+
+使用原来的序列构造处一个单调不增的序列，使得 $b_i \equiv a_i pmod 10$。答案是这个序列的和加上 $n$。[Code](./Atcoder/AtCoder-Beginner-Contest-407/C_Security_2.cpp)
+
+#### [D. Domino Covering XOR](https://atcoder.jp/contests/abc407/tasks/abc407_d)
+
+怎么这么喜欢出爆搜题，不怎么会写。正确的写法是：枚举放置的位置，然后每个位置存在三种放置方式：不放，横着放（$(i, j)$ 和 $(i, j + 1)$），竖着放（$(i, j)$ 和 $(i + 1, j)$）。如果这格已经被放过了那么只能不放。看起来的时间复杂度是 $O(3^n)$，实际上由于互相占位的情况比较多，所以跑得很快，只能说神秘剪枝发力了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-407/D_Domino_Covering_XOR.cpp)
+
+#### [E. Most Valuable Parentheses](https://atcoder.jp/contests/abc407/tasks/abc407_e)
+
+反悔贪心。一开始一直在想贪心，感觉怎么想怎么错，然后后面在想反悔贪心，但是非常非常暴力。因为左括号是有收益的，所以优先放左括号，也就是现在前 $n$ 个位置放左括号，然后考虑放 $n$ 个右括号。建一个最小堆，每次将收益最小的可选择位置（包括当前位置）替换成右括号。然是这样没有保证合法括号，那么如何保证合法括号呢，显然是前缀和大于等于 $0$。那么直接开一棵线段树暴力区间修改暴力查询整体最小值，如果不合法就继续找。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-407/E.cpp)
+
+还有更短的反悔贪心。证明比较简单，使用数学归纳法，但是感觉真不好想吧。[Code](./Atcoder/AtCoder-Beginner-Contest-407/EE.cpp)
+
+#### [F. Sums of Sliding Window Maximum](https://atcoder.jp/contests/abc407/tasks/abc407_f)
+
+一开始看错题了，想直接笛卡尔树+线段树闭眼秒。后面发现不是排列，笛卡尔树并不好用。但是可以使用 map 来做，把遍历的时间复杂度变成 $O(n \log n)$ 而已。然后大概随便计算一下贡献就可以得出答案数组是由 $O(n)$ 个等差数列加起来的，线段树可以维护等差数列的区间加。但是想戒一下数据结构，就没写线段树，写得太难受了，感觉严重数据结构依赖了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-407/F_Sums_of_Sliding_Window_Maximum.cpp)
+
+#### [G. Domino Covering SUM](https://atcoder.jp/contests/abc407/tasks/abc407_g)
+
+神人网络流。
+
+把图上的点分成两个部分，一部分是主动选择的，一部分是被动选择的。我们让 $(i + j) \equiv 0 pmod 2$ 的点作为主动选择的点， $(i + j) \equiv 1 pmod 2$ 的点是被动选择的点。那么每个主动选择的点最多主动选择一种连接方式，而被动选择的点也最多只能接受一种连接方式。所以源点汇点分别与两部分的连边，容量为 $1$，费用为 $0$。两个部分的点存在若干的连接方式，容量为 $1$，费用为两个点的点权和。
+
+跑一个**费用优先**的费用流。由于这题存在负权边且**只考虑费用小于 $0$ 的增广路**，板子有点不同，可以选择更新自己的费用流板子了。
+
+[Code](./Atcoder/AtCoder-Beginner-Contest-407/G_Domino_Covering_SUM.cpp)
+
+**有空测试一下 KM 算法**
+
 ### String + Math 训练题单
 
 啊啊懒得写题解，直接放代码+训练学到的一些东西。
