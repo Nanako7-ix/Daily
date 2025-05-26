@@ -950,3 +950,13 @@ dp(i, j, k) \leftarrow dp(i + 1, j + 1, k - 1)\\
 $$
 
 [Code](./nowcoder/牛客周赛-Round-93/渝.cpp)
+
+### String + Math 训练题单
+
+啊啊懒得写题解，直接放代码+训练学到的一些东西。
+
+[A](./SZUACM/String+Math/训练/题单/A_Power_Strings.cpp), [B](./SZUACM/String+Math/训练/题单/B_最长异或路径.cpp), [C](./SZUACM/String+Math/训练/题单/C_最长双回文串.cpp), [D](./SZUACM/String+Math/训练/题单/D_Menji_和_gcd.cpp), [E](./SZUACM/String+Math/训练/题单/E_Censoring_G.cpp), [G](./SZUACM/String+Math/训练/题单/G_Needle.cpp), [I](./SZUACM/String+Math/训练/题单/I_Vika_and_Stone_Skipping.cpp)
+
+参考资料：[Border理论小记](https://www.luogu.com.cn/article/ds5cz0sg), [字符串border原理小结&KMP优化](https://www.cnblogs.com/tyin/p/15604305.html)
+
+首先讲一下 border，这是 KMP 算法的一个很厉害的东西。如果一个字符串 $t$ 是 $s$ 的 `border` 当且仅当 $t$ 是 $s$ 的真前后缀。然后是周期 `period`，$T$ 是周期字符串当且仅当 $s - T$ 是 `border`。
