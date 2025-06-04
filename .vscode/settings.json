@@ -103,7 +103,8 @@
         "rope": "cpp",
         "slist": "cpp",
         "dynamic_bitset": "cpp",
-        "io_context": "cpp"
+        "io_context": "cpp",
+        "executor": "cpp"
     },
     "C_Cpp.default.compilerPath": "/usr/bin/gcc",
 }
