@@ -1017,17 +1017,19 @@ $$
 
 [Code](./nowcoder/牛客周赛-Round-98/A-小红与奇数.cpp)
 
-#### B
+#### [B. 小红与gcd三角形](https://ac.nowcoder.com/acm/contest/112320/B)
 
 给你两个整数 $x$, $y$，问 $x$, $y$ 和 $\gcd(x, y)$ 能否组成一个非退化的三角形。判断 $|x - y| < \gcd(x, y) < x + y$。
 
-[Code](./nowcoder/牛客周赛-Round-98/B)
+[Code](./nowcoder/牛客周赛-Round-98/B-小红与gcd三角形.cpp)
 
-#### C
+#### [C. 小红与red](https://ac.nowcoder.com/acm/contest/112320/C)
 
 `dp[i][c] : pair<int, string>` 表示考虑前 i 个字符，最后一个字符为 c 的最小代价和对应的字符串。由于不能和**上一个重复**（提示dp）所以是从 $i - 1$ 的另外两种字符转移过来，取一下最小值就行。如果 $O(n)$ 的话记录 pre 就行，但是可以 $O(n^2)$ 就直接暴力草就行了。
 
-#### D
+[Code](./nowcoder/牛客周赛-Round-98/C-小红与red.cpp)
+
+#### [D. 小红与好数组](https://ac.nowcoder.com/acm/contest/112320/D)
 
 暴力枚举
 
@@ -1056,7 +1058,9 @@ void solve() {
 }
 ```
 
-#### E
+[Code](./nowcoder/牛客周赛-Round-98/D-小红与好数组.cpp)
+
+#### [E. 小红与gcd和sum](https://ac.nowcoder.com/acm/contest/112320/E)
 
 考虑枚举 $\gcd$，那么可以选择的数一定是 $\gcd$ 的倍数。维护一个 `sum[gcd]` 表示以 `gcd` 为 $\gcd$ 的时候，可以选择的数的总和。那么这个数组的构建只需要对每一个数枚举因子，加入说 $d$ 是 $a_i$ 的因子，那么 `sum[d] += a[i]`。这个枚举因子如果调和级数预处理 + 枚举是会 T 的，那么直接在调和级数预处理的时候顺手解决就好了。
 
@@ -1069,9 +1073,13 @@ for (int i = 1; i <= N; ++i) {
 }
 ```
 
-#### F
+[Code](./nowcoder/牛客周赛-Round-98/E-小红与gcd和sum.cpp)
+
+#### [F. 小红与天使猫猫酱](https://ac.nowcoder.com/acm/contest/112320/F)
 
 发现 $22 = 2 \cdot 11$，那么 $22^x$ 的因子个数为 $(x + 1) ^ 2$。那么接下来只需要求出 $a_n$ 的指数就能解出 $b_n$ 了。利用高中的数列知识容易得出 $a_n$ 的指数为 $\frac{2}{9}(10^n - 1)$。然后带入得到 $b_n = \frac{4}{81} 100^n + \frac{28}{81} 10^n + \frac{49}{81}$。然后容易计算出答案为 $\frac{4}{81} \frac{100(100^n - 1)}{99} + \frac{28}{81} \frac{10(10^n - 1)}{9} + \frac{49}{81} n$
+
+[Code](./nowcoder/牛客周赛-Round-98/F-小红与天使猫猫酱.cpp)
 
 ### Codeforces Round 1034 (Div. 3)
 
