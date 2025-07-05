@@ -963,7 +963,7 @@ $$
 
 #### [C. Security 2](https://atcoder.jp/contests/abc407/tasks/abc407_c)
 
-使用原来的序列构造处一个单调不增的序列，使得 $b_i \equiv a_i pmod 10$。答案是这个序列的和加上 $n$。[Code](./Atcoder/AtCoder-Beginner-Contest-407/C_Security_2.cpp)
+使用原来的序列构造处一个单调不增的序列，使得 $b_i \equiv a_i \pmod {10}$。答案是这个序列的和加上 $n$。[Code](./Atcoder/AtCoder-Beginner-Contest-407/C_Security_2.cpp)
 
 #### [D. Domino Covering XOR](https://atcoder.jp/contests/abc407/tasks/abc407_d)
 
@@ -1006,3 +1006,135 @@ $$
 参考资料：[Border理论小记](https://www.luogu.com.cn/article/ds5cz0sg), [字符串border原理小结&KMP优化](https://www.cnblogs.com/tyin/p/15604305.html)
 
 首先讲一下 border，这是 KMP 算法的一个很厉害的东西。如果一个字符串 $t$ 是 $s$ 的 `border` 当且仅当 $t$ 是 $s$ 的真前后缀。然后是周期 `period`，$T$ 是周期字符串当且仅当 $s - T$ 是 `border`。
+
+### 牛客周赛 Round 98
+
+#### [A. 小红与奇数](https://ac.nowcoder.com/acm/contest/112320/A)
+
+操作：让一个数加上自己的因子，问 $x$ 严格执行一次操作时能不能变成奇数。
+
+如果 $x$ 是奇数，那么需要加上一个偶数因子才能变成奇数。奇数不存在偶数因子。如果是偶数，需要加上一个奇数因子，而朴素的奇数因子是 $1$，所以奇数输出 `No`，偶数输出 `Yes`。
+
+[Code](./nowcoder/牛客周赛-Round-98/A-小红与奇数.cpp)
+
+#### B
+
+给你两个整数 $x$, $y$，问 $x$, $y$ 和 $\gcd(x, y)$ 能否组成一个非退化的三角形。判断 $|x - y| < \gcd(x, y) < x + y$。
+
+[Code](./nowcoder/牛客周赛-Round-98/B)
+
+#### C
+
+`dp[i][c] : pair<int, string>` 表示考虑前 i 个字符，最后一个字符为 c 的最小代价和对应的字符串。由于不能和**上一个重复**（提示dp）所以是从 $i - 1$ 的另外两种字符转移过来，取一下最小值就行。如果 $O(n)$ 的话记录 pre 就行，但是可以 $O(n^2)$ 就直接暴力草就行了。
+
+#### D
+
+暴力枚举
+
+```cpp
+void solve() {
+    int n;
+    cin >> n;
+    vector<int> now;
+    now.reserve(n);
+    auto dfs = [&](auto &&dfs, int rest) {
+        if (rest == 0) {
+            for (auto x : now) {
+                cout << x << " ";
+            }
+            cout << "\n";
+            return;
+        }
+        for (int i = 1; i <= rest; ++i) {
+            if (now.size() != 0 && i == now.back()) continue;
+            now.push_back(i);
+            dfs(dfs, rest - i);
+            now.pop_back();
+        }
+    };
+    dfs(dfs, n);
+}
+```
+
+#### E
+
+考虑枚举 $\gcd$，那么可以选择的数一定是 $\gcd$ 的倍数。维护一个 `sum[gcd]` 表示以 `gcd` 为 $\gcd$ 的时候，可以选择的数的总和。那么这个数组的构建只需要对每一个数枚举因子，加入说 $d$ 是 $a_i$ 的因子，那么 `sum[d] += a[i]`。这个枚举因子如果调和级数预处理 + 枚举是会 T 的，那么直接在调和级数预处理的时候顺手解决就好了。
+
+```cpp
+vector<i64> sum(N + 1);
+for (int i = 1; i <= N; ++i) {
+    for (int j = i; j <= N; j += i) {
+        sum[i] += 1LL * j * cnt[j];
+    }
+}
+```
+
+#### F
+
+发现 $22 = 2 \cdot 11$，那么 $22^x$ 的因子个数为 $(x + 1) ^ 2$。那么接下来只需要求出 $a_n$ 的指数就能解出 $b_n$ 了。利用高中的数列知识容易得出 $a_n$ 的指数为 $\frac{2}{9}(10^n - 1)$。然后带入得到 $b_n = \frac{4}{81} 100^n + \frac{28}{81} 10^n + \frac{49}{81}$。然后容易计算出答案为 $\frac{4}{81} \frac{100(100^n - 1)}{99} + \frac{28}{81} \frac{10(10^n - 1)}{9} + \frac{49}{81} n$
+
+### Codeforces Round 1034 (Div. 3)
+
+> 回归了，AK 一把 Div 3 康复训练一下
+
+#### [A. Blackboard Game](https://codeforces.com/contest/2123/problem/A)
+
+打表观察一下发现，Bob 获胜当且仅当 $n \bmod 4 \equiv 0$，直接输出即可。[Code](./Codeforces/2123/2123A.cpp)
+
+#### [B. Tournament](https://codeforces.com/contest/2123/problem/B)
+
+每次随机选择两个人删掉其中的采集（没错就是我），最终留下 $k$ 个人，问 $p$ 这个人能不能留到最后。显然如果 $k \neq 1$，那么以上的操作都不会和第 $p$ 个人有关，因为可以选择操作其他的人。如果 $k = 1$，那么剩下的人一定是 $a_i$ 最大的那个，所以第 $p$ 个人留下当且仅当 $a_p = \max(a)$。[Code](./Codeforces/2123/2123B.cpp)
+
+#### [C. Prefix Min and Suffix Max](https://codeforces.com/contest/2123/problem/C)
+
+你可以操作若干次以下操作：
+
+- 选择 $a$ 的一个前缀，用这个前缀的最小值替换这个前缀。
+- 选择 $a$ 的一个后缀，用这个后缀的最大值替换这个后缀。
+
+问对于每个 $a_i$, 是否可能让整个序列只有 $a_i$ 这个数（也就是不能要求有不等于 $a_i$）的值
+
+结论 $1$，如果可以让 $a_i$ 作为答案，那么一定可以一种操作使得整个数组只剩下 $i$ 这个位置。所以我们只需要对于每一个 $a_i$，考虑是否存在一个位置可以留到最后。
+
+结论 $2$，$i$ 这个位置留到了最后的一个必要条件是：$\min_a(1, i - 1) \geq a_i$ 或 $\max_a(i + 1, n) \leq a_i$。至于为什么充分我就不知道了，但是必要性很好证明。把这个条件打上去就过了：[Code](./Codeforces/2123/2123C.cpp)
+
+#### [D. Binary String Battle](https://codeforces.com/contest/2123/problem/D)
+
+Alice 和 Bob 在一个 01 串上玩游戏，然后 Alice 的目标是让序列全为 $0$，他们会回合制进行以下操作，问 Alice 能不能成功。
+
+Alice：每次选择一个长度为 $k$ 的**子序列**，将其全变为 $0$
+Bob：每次选择一个长度为 $k$ 的**子串**，将其全变为 $1$
+
+第一步是验证 $s$ 中 $1$ 的个数是否小于等于 $k$，如果是，那么一定能赢。
+
+这里样例给了一个比较好的例子 $k = 4, s = 1011011$。这是可以实现的。Alice 第一次把除了中间的 $1$ 去掉，然后就能赢了。
+
+这里引出一个概念：必删 $1$。如果一个位置的 $1$ 满足，这个位置的左边或右边存在一个大于等于 $k$ 的区间，那么这个位置的 $1$ 就是必删 $1$。容易得到性质：如果必删 $1$ 存在，那么一定不能在**下一回合内**获胜。理由是 Bob 可以在必删 $1$ 的左边或者右边加上 $k$ 个 $1$，这样场上就剩下了至少 $k + 1$ 个 $1$。
+
+那么 Alice 的目标是：尽可能减少必删 $1$，如果必删 $1$ 的个数为 $0$，那么 Alice 就可以在下一回合（或者当前状态）获胜。相反 Bob 的目标就是尽可能添加必删 $1$。
+
+由于 Alice 删子序列，所以必删 $1$ 一回合内可以删掉 $k$ 个。所以如果 Bob 在最好的情况下不能做到补充 $k$ 个必删 $1$，那么 Bob 是慢性死亡，判 Alice 获胜。
+
+没错就这样做完了，这是严谨的证明。事实上，以上的解法可以继续推导，得出慢性死亡的条件是 $2\cdot k > n$，不过我没这么写，因为没想到。[Code](./Codeforces/2123/2123D.cpp)
+
+这题的证明挺有意思的。
+
+#### [E. MEX Count](https://codeforces.com/contest/2123/problem/E)
+
+给一个序列，然后对于 $k \in [1, n]$，问从数组中移除严格 $k$ 个数之后，有多少种 Mex。这里需要改变一下思路，考虑从数组中删除多少个数的情况下，$x$ 会作为 Mex 值，这样我们枚举 $x$ 就行了。
+
+考虑让 $x$ 作为 Mex 值，首先 $[0, x)$ 不能有数字空缺。然后删除的数字个数 $k$ 满足 $k \geq cnt_x$。其次不能把 $[0, x)$ 的数字全删了，那么最坏情况就是区间内的数字每个剩下一个，也就是数组中剩下严格 $x$ 个数字，所以 $k \leq n - x$。于是得到区间：$k \in [cnt_x, n - x]$。
+
+区间修改用差分。[Code](./Codeforces/2123/2123E.cpp)
+
+#### [F. Minimize Fixed Points](https://codeforces.com/contest/2123/problem/F)
+
+典中典构造题，构造方法挺多的，我的比较复杂，但是容易证明。[Code](./Codeforces/2123/2123F.cpp)
+
+#### [G. Modular Sorting](https://codeforces.com/contest/2123/problem/G)
+
+你需要知道：裴蜀定理
+
+根据裴蜀定理容易证明，在操作 $2$ 情况下，一个数操作前 $a_i$ 和操作后 $a_i'$ 满足 $a_i \equiv a_i' \pmod {\gcd(m, k)}$。所以考虑操作 $2$ 的 $k$, 一定是先把 $a_i$ 化成 $a_i \bmod \gcd(m, k)$。然后如果一个数比前一个数小，那么就把后续的数字加上 $\gcd(m, k)$。所以一共允许加上 $\gcd$ 一共 $\frac{m}{\gcd(m, k)} - 1$ 次。我们直接维护有多少个下降位置，判断即可。
+
+没错就是对每一个 $\gcd$ 维护一个序列，对这么多个序列维护它的断点数量，直接输出即可。注意到 $\gcd(m, k)$ 是 $m$ 的因子，而这个范围内的因子个数也就 $200$ 个左右，所以直接开 $200$ 个数组暴力维护，更新也是暴力更新。
