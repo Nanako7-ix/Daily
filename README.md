@@ -1146,3 +1146,35 @@ Bob：每次选择一个长度为 $k$ 的**子串**，将其全变为 $1$
 根据裴蜀定理容易证明，在操作 $2$ 情况下，一个数操作前 $a_i$ 和操作后 $a_i'$ 满足 $a_i \equiv a_i' \pmod {\gcd(m, k)}$。所以考虑操作 $2$ 的 $k$, 一定是先把 $a_i$ 化成 $a_i \bmod \gcd(m, k)$。然后如果一个数比前一个数小，那么就把后续的数字加上 $\gcd(m, k)$。所以一共允许加上 $\gcd$ 一共 $\frac{m}{\gcd(m, k)} - 1$ 次。我们直接维护有多少个下降位置，判断即可。
 
 没错就是对每一个 $\gcd$ 维护一个序列，对这么多个序列维护它的断点数量，直接输出即可。注意到 $\gcd(m, k)$ 是 $m$ 的因子，而这个范围内的因子个数也就 $200$ 个左右，所以直接开 $200$ 个数组暴力维护，更新也是暴力更新。
+
+### 牛客周赛 Round 99
+
+#### [A. Round 99](https://ac.nowcoder.com/acm/contest/112544/A)
+
+签到，使用 `string.contains(string)` 函数。[Code](./nowcoder/牛客周赛-Round-99/A-Round_99.cpp)
+
+#### [B. 缺陷型电脑](https://ac.nowcoder.com/acm/contest/112544/B)
+
+找到字符串中的 `ascii` 码最大值。直接 `max_element()` 就行了。[Code](./nowcoder/牛客周赛-Round-99/B-缺陷型电脑.cpp)
+
+#### [C. 小苯的洞数构造](https://ac.nowcoder.com/acm/contest/112544/C)
+
+贪心，如果 $n = 0$ 直接输出 $1$，否则由于数位最少，一定是先选择偶数，然后再用奇数补上 $n \bmod 2$，然后根据大小顺序调整一下就可以了。[Code](./nowcoder/牛客周赛-Round-99/C-小苯的洞数构造.cpp)
+
+#### [D. 前缀和](https://ac.nowcoder.com/acm/contest/112544/D)
+
+容易观察出规律：$2, 4, 6, 8,\cdots, 2(k-1), 1, 2k, 2(k + 1), \cdots$。按照这个规律输出即可。[Code](./nowcoder/牛客周赛-Round-99/D-前缀和.cpp)
+
+#### [E. 小宇](https://ac.nowcoder.com/acm/contest/112544/E)
+
+这里的严格递增的性质赛时没看出来是糖丸了。
+
+- 性质 $1$：$a_i \geq i$
+- 性质 $2$：如果 $a_i = i$，那么 $a_j = j\;(1\leq j\leq i)$
+- 性质 $3$：如果 $a_i$ 出现多次，那么需要对 $a_i$ 进行操作。
+
+所以我们需要找到最后一个一定需要满足 $a_i = i$ 的位置。然后后面的是不需要操作的，前面的如果不满足 $a_i = i$，那么需要对 $a_i$ 进行操作。[Code](./nowcoder/牛客周赛-Round-99/E-小宇.cpp)
+
+#### [F. 汉堡猪猪分糖果](https://ac.nowcoder.com/acm/contest/112544/F)
+
+考虑贪心，从高位到低位填数字。`ans` 的第 $i$ 位是 $1$ 需要满足糖的数量足够分，也就是当前剩余糖果的数量 $n$ 满足 $n \geq m\cdot 2^i$。如果糖果不够分，那么需要在这个位适当消耗一点糖，使得后面的糖果数量不会溢出。也就是需要找到一个最小的非负整数 $k$ 满足 $n - k\cdot 2^i \leq m\cdot(2^{i-1}-1)$。你可以使用二分，也可以学 yyz 直接推完式子 $O(1)$ 做
