@@ -1308,11 +1308,11 @@ $$
 拓展欧拉定理则是降幂的完全体了：
 
 $$
-a^x \equiv
+a^n \equiv
 \begin{cases}
-& a ^ {x \bmod \varphi(p)} & \gcd(a, p)=1\\
-& a ^ b & \gcd(a, p) \neq 1, b \lt \varphi(p)\\
-& a ^ {b \bmod \varphi(p) + \varphi(p)} & \gcd(a, p) \neq 1, b \geq \varphi(p)\\
+& a ^ {n \bmod \varphi(p)} & \gcd(a, p)=1\\
+& a ^ n & \gcd(a, p) \neq 1, n \lt \varphi(p)\\
+& a ^ {n \bmod \varphi(p) + \varphi(p)} & \gcd(a, p) \neq 1, b \geq \varphi(p)\\
 \end{cases}
 \pmod p
 $$
