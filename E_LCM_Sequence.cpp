@@ -1,114 +1,61 @@
-/**
- *
- *  $$$$$$\  $$$$$$\  $$$$$$\  $$\       $$\       $$$$$$\  
- * $$  __$$\ \_$$  _|$$  __$$\ $$ |      $$ |     $$  __$$\ 
- * $$ /  \__|  $$ |  $$ /  $$ |$$ |      $$ |     $$ /  $$ |
- * $$ |        $$ |  $$$$$$$$ |$$ |      $$ |     $$ |  $$ |
- * $$ |        $$ |  $$  __$$ |$$ |      $$ |     $$ |  $$ |
- * $$ |  $$\   $$ |  $$ |  $$ |$$ |      $$ |     $$ |  $$ |
- *  $$$$$$ | $$$$$$\ $$ |  $$ |$$$$$$$$\ $$$$$$$$\ $$$$$$  |
- * \______/  \______|\__|  \__|\________|\________|\______/ 
- *
- * Author:  Nanako7_ix
- * Created: 2025/06/28 20:59:55
- * 好想和 めぐる 一起打 xcpc 啊
- */
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-#define setpre(x) fixed << setprecision(x)
-#define debug(x) cerr << #x << " = " << x << "\n"
-#define endl "\n"
 using namespace std;
-using namespace __gnu_pbds;
 
-using i64 = long long;
-using u64 = unsigned long long;
-using u32 = unsigned;
+using i64  = long long;
+using u64  = unsigned long long;
+using u32  = unsigned;
 using u128 = unsigned __int128;
 using i128 = __int128;
-using f64 = double;
+using f64  = double;
+using f128 = __float128;
 
-constexpr int inf = 0x3f3f3f3f;
-constexpr i64 INF = 0x3f3f3f3f3f3f3f3f;
+std::vector<int> minp, P;
 
-i64 mul(i64 a, i64 b, i64 m) {
-    return static_cast<i128>(a) * b % m;
-}
-
-i64 power(i64 a, i64 b, i64 m) {
-    i64 res = 1 % m;
-    for(; b; b >>= 1, a = mul(a, a, m)) {
-        if(b & 1) res = mul(res, a, m);
-    }
-    return res;
-}
-
-bool isPrime(i64 n) {
-    if(n < 2) return false;
-    static constexpr int A[] = {2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47};
-    int s = countr_zero<u64> (n - 1);
-    i64 d = (n - 1) >> s;
-    for (auto a : A) {
-        if (a == n) return true;
-        i64 x = power(a, d, n);
-        if (x == 1 || x == n - 1) continue;
-        bool ok = false;
-        for (int i = 1; i < s; ++i) {
-            x = mul(x, x, n);
-            if (x == n - 1) {
-                ok = true;
-                break;
-            }
-        }
-        if(!ok) return false;
-    }
-    return true;
-}
-
-vector<int> minp, primes;
 void sieve(int N) {
     minp.assign(N + 1, 0);
-    primes.clear();
-    for (i64 i = 2; i <= N; ++i) {
-        if (!minp[i]) primes.emplace_back(minp[i] = i);
-        for (auto p : primes) {
-            if (i * p > N) break;
+    P.clear();
+    for (int i = 2; i <= N; ++i) {
+        if (minp[i] == 0) {
+            P.push_back(minp[i] = i);
+        }
+        for (i64 p : P) {
+            if(i * p > N) break;
             minp[i * p] = p;
-            if (i % p == 0) break;
+            if(i % p == 0) break;
         }
     }
 }
 
-void solve() {
+std::vector<int> interval_sieve(i64 l, i64 r) {
+    std::vector<int> ok(r - l + 1, 1);
+    if (l == 1) ok[0] = 0;
+    for (i64 p : P) {
+        i64 s = std::max(p * p, (l + p - 1) / p * p);
+        for (i64 i = s; i <= r; i += p) {
+            ok[i - l] = 0;
+        }
+    }
+    return ok;
+}
+
+void Thephix () {
     sieve(1E7);
-    
     i64 l, r;
     cin >> l >> r;
-    
-    int ans = 1;
-    
-    auto cnt = [](i64 x, i64 p) {
-        i64 res = 1, ans = 0;
-        while (i128(res) * p <= x) {
-            res *= p, ans++;
-        }
-        return ans;
-    };
 
-    for (auto p : primes) {
+    auto ok = interval_sieve(l + 1, r);
+    for (i64 p : P) {
         if (p > r) break;
-        ans += cnt(r, p) - max(cnt(l, p), 1LL);
+        for (i128 x = p * p; x <= r; x *= p) {
+            if (x <= l) continue;
+            ok[x - l - 1] = 1;
+        }
     }
 
-    for (i64 i = l % 2 == 0 ? l + 1 : l + 2; i <= r; i += 2) {
-        ans += isPrime(i);
-    }
-
-    cout << ans << "\n";
+    cout << 1 + accumulate(ok.begin(), ok.end(), 0) << "\n";
 }
 
-signed main() {
+int main() {
     cin.tie(0), cout.tie(0);
     ios::sync_with_stdio(0);
 
@@ -116,7 +63,7 @@ signed main() {
     // cin >> T;
 
     while (T--) {
-        solve();
+        Thephix();
     }
 
     return 0;

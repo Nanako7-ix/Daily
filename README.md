@@ -1313,8 +1313,117 @@ a^n \equiv
 \pmod p
 $$
 
+
+
 ### 牛客多校
 
-牛客多校写的太多了，要不还是放在里面比较好
+牛客多校写的太多了，要不还是放在里面比较好。
 
-[牛客多校 2](./牛客多校/多校2/补题总结.md)
+### 
+
+> 水一把 div3，已经越来越菜了
+
+#### [A. Lever](https://codeforces.com/contest/2131/problem/A)
+
+$a_i > b_i$ 的数量只会受第一种操作的影响，操作次数只需要考虑第一种操作，所以只需要考虑 $a_i > b_i$ 的情况即可。
+
+[Code](./Codeforces/2131/2131A.cpp)
+
+#### [B. Alternating Series](https://codeforces.com/contest/2131/problem/B)
+
+看样例猜一下是构造 $\begin{matrix}-1&3&-1&3&-1&3&-1\cdots\end{matrix}$。然后如果是正数当末尾，也就是 $n$ 为偶数，那么最后一位是 $2$。否则就是奇数位置放 $-1$，偶数位置放 $3$。
+
+[Code](./Codeforces/2131/2131B.cpp)
+
+#### [C. Make it Equal](https://codeforces.com/contest/2131/problem/C)
+
+如果 $x \geq k$，那么 $x + k$ 和 $x - k$，这样是不改变对 $k$ 取模后的值的。但是如果 $x < k$，就会变成 $k - x$。所以 $x$ 无论怎么变化，对 $k$ 取模的值只有可能是 $x \bmod k$ 和 $-x \bmod k$。而且 $x$ 只要满足上面的这个要求，无论什么数都可以做到。那么只需要判断集合 $T$ 中是否存在同余的就行了。
+
+[Code](./Codeforces/2131/2131C.cpp)
+
+#### [D. Arboris Contractio](https://codeforces.com/contest/2131/problem/D)
+
+直径最小的话一定是菊花图。考虑枚举菊花的中心 $u$，操作次数一定是以 $u$ 为根时，距离不等于 $1$ 的叶子的数量。这个值等于度数为 $1$ 的点的数量减去与 $u$ 相邻的度数为 $1$ 的点的数量。枚举计算即可。
+
+需要特判 $n = 2$ 的情况。
+
+[Code](./Codeforces/2131/2131D.cpp)
+
+#### [E. Adjacent XOR](https://codeforces.com/contest/2131/problem/E)
+
+由于每个下标只会被操作一次，所以如果 $a_i = b_i$，那么不会通过操作变成其他的数字，因为变不回来了。而如果 $a_i \neq b_i$ 那么一定是需要通过严格一次操作变成 $b_i$ 的，这就要求了 $a_{i+1} = a_i \oplus b_i$。我们只需要考虑是否存在某个时刻满足 $a_{i + 1} = a_i \oplus b_i$。而上文提到 $a_i$ 最多只可能是 $a_i$ 和 $b_i$。判一下即可。
+
+[Code](./Codeforces/2131/2131E.cpp)
+
+#### [F. Unjust Binary Life](https://codeforces.com/contest/2131/problem/F)
+
+结论是：如果你想走到 $(x, y)$，那么 $a_1 = a_2 = \cdots = a_x = b_1 = b_2 = \cdots = b_y$。那么答案就是 $\min(\operatorname{cnta}(x, 0) + \operatorname{cntb}(y, 0), \operatorname{cnta}(x, 1) + \operatorname{cntb}(y, 1))$。
+
+所以你考虑什么时候答案是 $\operatorname{cnta}(x, 0) + \operatorname{cntb}(y, 0)$。这个显然是 $\operatorname{cnta}(x, 0) + \operatorname{cntb}(y, 0) \leq \operatorname{cnta}(x, 1) + \operatorname{cntb}(y, 1)$ 吧，把上面的式子化简一下就是：$\operatorname{cnta}(x, 0) - \operatorname{cnta}(x, 1)  \leq \operatorname{cntb}(y, 1) - \operatorname{cntb}(y, 0)$。现在我们需要考虑所有的二元组 $(x, y)$，还是经典思路枚举一个然后把另外一个给算出来。
+
+我们考虑枚举 $x$，那么对于所有的 $y$ 来说，满足 $\operatorname{cntb}(y, 1) - \operatorname{cntb}(y, 0) \geq \operatorname{cnta}(x, 0) - \operatorname{cnta}(x, 1)$ 的提供 $\operatorname{cnta}(x, 0) + \operatorname{cntb}(y, 0)$ 的贡献，否则提供 $\operatorname{cnta}(x, 1) + \operatorname{cntb}(y, 1)$ 的贡献。由于我们已经知道了 $\operatorname{cnta}(x, 0) - \operatorname{cnta}(x, 1)$ 的值，所有我们如果可以快速计算出有哪些 $y$ 满足条件，应该就会好做很多。
+
+那么我们直接按 $\operatorname{cntb}(y, 1) - \operatorname{cntb}(y, 0)$ 排序。这样我们可以二分出一个范围，然后分别计算两边的贡献即可。
+
+[Code](./Codeforces/2131/2131F.cpp)
+
+#### [G. Wafu!](https://codeforces.com/contest/2131/problem/G)
+
+考虑我把一个数删除（指的是删完之后所产生的所有数字也全被删掉）所需要操作的次数。容易发现 $f(1) = 1, f(2) = 1 + f(1), f(3) = 1 + f(1) + f(2)$。我们手玩一下这个东西就会发现 $f(n) = 2^{n - 1}$，所有只有 $30$ 以内的数字可以被全部删完。我们接下来再考虑删完一个数字的贡献。这个是 $g(1) = 1$ 且 $g(n) = n\prod\limits_{i=1}^{n-1} g(i)$，由于我们只需要考虑 $n \leq 30$ 所以可以直接预处理一下。
+
+接下来我们从小到大枚举集合中的元素 $x$，如果 $k \geq 2^{x-1}$，那么直接拿它的贡献，否则就先操作一次，在考虑 $[1, x)$ 中的元素依次拿取，直到再次拿不下为止。
+
+这个暴力做其实很快的，但是实际上你会发现，这个其实就是 lowbit，太涩了。
+
+[Code](./Codeforces/2131/2131G.cpp)
+
+#### [H. Sea, You & copriMe](https://codeforces.com/contest/2131/problem/H)
+
+这题的核心在于如何在一个集合中找到一组互素的元素。如果可以解决这个，那么随便模拟一下就可以了（虽然这题一直在赤这个史）。所以这里只讲 $O(n\cdot 2^{\Omega(x)} + n\log(x))$ 找到一组互素的元素。
+
+对于一个元素 $x$，如果我们可以快速判断集合中是否存在与 $x$ 互素的元素，那么我们就可以直接扫一遍整个集合，如果找到了一个合法的元素 $x$ 满足集合中存在另一个元素 $y$ 与其互素，那么我们就直接再次枚举这个集合找到 $y$ 即可。寻找 $y$ 的时间复杂度是 $O(n\log x)$ 的，下面考虑如何判断集合中是否存在于 $x$ 互素的元素。
+
+如果 $y$ 与 $x$ 不互素，那么 $y$ 至少能被一个 $x$ 的素因子整除。所以我们只需要判断集合中满足上面的条件的元素的个数是否等于集合大小即可。这个至少能被一个素因子整除，我们不妨考虑容斥求解。那么就有：
+
+```cpp
+// cnt[x] 表示有多少个元素是 x 的倍数
+for (auto x : a) {
+    int tot = fac[x].size();
+    for (int s = 1; s < (1 << tot); ++s) {
+        int mul = 1;
+        for (int j = 0; j < tot; ++j) {
+            if (s >> j & 1) {
+                mul *= fac[x][j];
+            }
+        }
+        cnt[mul]++;
+    }
+}
+
+int ans = 0, tot = fac[x].size();
+for (int s = 1; s < (1 << tot); ++s) {
+    int mul = 1;
+    for (int j = 0; j < tot; ++j) {
+        if (s >> j & 1) {
+            mul *= fac[x][j];
+        }
+    }
+    if (popcount<u32> (s) & 1) {
+        ans += cnt[mul];
+    } else ans -= cnt[mul];
+}
+```
+
+这样做完了。事实上，你会发现这就是 mobius 反演。我们用莫反的式子推导一下：
+
+$$
+\begin{aligned}
+\operatorname{ans} &= \sum_{i = 1}^n [\gcd(a_i, x) = 1]\\
+&= \sum_{i = 1}^n \sum_{d \mid \gcd(a_i, x)} \mu(d)\\
+&= \sum_{d | x} \sum_{i = 1}^n [d \mid a_i]\cdot \mu(d)
+\end{aligned}
+$$
+
+所以 mobius 反演就是容斥，$\mu$ 就是容斥中的系数。学不明白的 mobius 反演呜呜。
+
+[Code](./Codeforces/2131/2131H.cpp)

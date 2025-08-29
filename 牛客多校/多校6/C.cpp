@@ -99,10 +99,15 @@ Comb<Z> comb;
 
 const int N = 500000;
 array<Z, N + 1> F0, F1, F2, F3;
+array<Z, N + 1> I, IJ, IJK;
+array<Z, N + 1> f0, f1, f2, f3;
 
 void Thephix() {
     int n; cin >> n;
-    cout << F3[n] * comb.fac(n - 1) << "\n";
+    Z ans1 = F3[n] * comb.fac(n - 1);
+    Z ans2 = comb.fac(n) * (I[n] + 6 * IJ[n] + 6 * IJK[n]);
+    Z ans3 = f3[n];
+    cout << ans1 << "\n";
 }
 
 int main() {
@@ -118,6 +123,20 @@ int main() {
         F1[i] = F1[i - 1] + ((F1[i - 1] + F0[i - 1]) * comb.inv(i - 1));
         F2[i] = F2[i - 1] + ((F2[i - 1] + 2 * F1[i - 1] + F0[i - 1]) * comb.inv(i - 1));
         F3[i] = F3[i - 1] + ((F3[i - 1] + 3 * F2[i - 1] + 3 * F1[i - 1] + F0[i - 1]) * comb.inv(i - 1));
+    }
+
+    for (int i = 1; i <= N; ++i) {
+        if (i > 0) I[i] = I[i - 1] + comb.inv(i);
+        if (i > 1) IJ[i] = IJ[i - 1] + I[i - 1] * comb.inv(i);
+        if (i > 2) IJK[i] = IJK[i - 1] + IJ[i - 1] * comb.inv(i);
+    }
+
+    f0[1] = f1[1] = f2[1] = f3[1] = 1;
+    for (int i = 2; i <= N; ++i) {
+        f0[i] = i * f0[i - 1];
+        f1[i] = i * f1[i - 1] + f0[i - 1];
+        f2[i] = i * f2[i - 1] + 2 * f1[i - 1] + f0[i - 1];
+        f3[i] = i * f3[i - 1] + 3 * f2[i - 1] + 3 * f1[i - 1] + f0[i - 1];
     }
 
     while (T--) {

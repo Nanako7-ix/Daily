@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+using i64  = long long;
+using u64  = unsigned long long;
+using u32  = unsigned;
+using u128 = unsigned __int128;
+using i128 = __int128;
+using f64  = double;
+using f128 = __float128;
+
+void Thephix() {
+	int n;
+  cin >> n;
+  vector<array<i64, 2>> a(n + 1);
+  for (int i = 1; i <= n; ++i) {
+    auto& [x, y] = a[i];
+    cin >> x >> y;
+  }
+
+  auto cross = [](const array<i64, 2>& x, const array<i64, 2>& y, const array<i64, 2>& z) {
+    i64 x1 = y[0] - x[0], y1 = y[1] - x[1];
+    i64 x2 = z[0] - y[0], y2 = z[1] - y[1];
+    return x1 * y2 - x2 * y1;
+  };
+
+  for (int x = 1; x <= n; ++x) {
+    int y = x % n + 1, z = y % n + 1;
+    if (cross(a[x], a[y], a[z]) < 0) {
+      cout << "Yes\n";
+      return;
+    }
+  }
+
+  cout << "No\n";
+}
+
+int main() {
+  cin.tie(0), cout.tie(0);
+  ios::sync_with_stdio(0);
+
+  int T = 1;
+  // cin >> T;
+
+  while (T--) {
+      Thephix();
+  }
+
+  return 0;
+}
