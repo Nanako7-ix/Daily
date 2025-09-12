@@ -1,8 +1,10 @@
 {
 	"files.associations": {
 		"*.m": "matlab",
+		"bitset": "cpp",
 		"array": "cpp",
-		"iostream": "cpp",
-		"ostream": "cpp"
+		"regex": "cpp",
+		"concepts": "cpp",
+		"iostream": "cpp"
 	}
 }
