@@ -10,15 +10,20 @@ using f64  = double;
 using f128 = __float128;
 
 void Thephix() {
-	int n, m, k;
-	cin >> n >> m >> k;
-	n++, m++;
-	for (int i = 1; i <= k; ++i) {
-		int x1, y1;
-		int x2, y2;
-		cin >> x1 >> y1 >> x2 >> y2;
-		
+	int n, k;
+	cin >> n >> k;
+
+	int m = -1;
+	for (int i = 2; true; ++i) {
+		if (gcd(i, k) == 1) {
+			m = i; break;
+		}
 	}
+
+	i64 ans = k;
+	if (m == 2) n--;
+	else n -= 2, ans += m;
+	cout << ans + (n + 1) / 2 * 2 + n / 2 * 3 << "\n";
 }
 
 int main() {

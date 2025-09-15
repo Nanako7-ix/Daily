@@ -9,6 +9,16 @@ using i128 = __int128;
 using f64  = double;
 using f128 = __float128;
 
+struct Frac {
+	i64 u, d;
+	Frac(i64 x = 0, i64 y = 1) {
+		u = x, d = y;
+	}
+	bool operator<(const Frac& o) const {
+		return u * o.d < o.u * d;
+	}
+};
+
 #define ls (u << 1)
 #define rs (u << 1 | 1)
 template<typename Info>
@@ -34,18 +44,18 @@ struct SegmentTree {
 		build(1, 1, n, f);
 	}
 
-	int dfs(int u, int l, int r, int Max) {
+	int query(int u, int l, int r, Frac Max) {
 		if (l == r) return Max < info[u].Max;
 		int m = (l + r) >> 1;
-		if (info[ls].Max > Max) {
-			return dfs(ls, l, m, Max) + info[u].len - info[ls].len;
-		} return dfs(rs, m + 1, r, info[ls].Max);
+		if (Max < info[ls].Max) {
+			return query(ls, l, m, Max) + info[u].len - info[ls].len;
+		} return query(rs, m + 1, r, Max);
 	}
 
 	void pull(int u, int l, int r) {
 		if (l == r) return;
-		info[u].Max = info[ls].Max + info[rs].Max;
-		info[u].len = info[ls].len + dfs(rs, ((l + r) >> 1) + 1, r, info[ls].Max);
+		info[u].Max = max(info[ls].Max, info[rs].Max);
+		info[u].len = info[ls].len + query(rs, ((l + r) >> 1) + 1, r, info[ls].Max);
 	}
 
 	template<typename Func>
@@ -84,10 +94,10 @@ struct SegmentTree {
 #undef rs
 
 struct Info {
-	f64 Max;
+	Frac Max;
 	int len;
 	Info () {
-		Max = 0, len = 1;
+		Max = {0, 1}, len = 0;
 	}
 };
 
@@ -100,9 +110,10 @@ void Thephix() {
 		int p, x;
 		cin >> p >> x;
 		seg.modify(p, [&](Info& info) {
-			info.Max = f64 (x) / p;
+			info.Max = Frac(x, p);
+			info.len = 1;
 		});
-		cout << seg.info[1].len << "\n";
+		cout << seg.query(1, 1, n, 0) << "\n";
 	}
 }
 
