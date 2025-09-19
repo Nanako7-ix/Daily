@@ -161,7 +161,6 @@ void __Thephix() {
 		for (int t = 1; t < (1 << n); ++t) {
 			if (t & s) sum += f[t];
 		}
-		// popcount * x <= sum
 		x = min(x, sum / popcount<u32>(s));
 	}
 
