@@ -434,6 +434,62 @@ void Thephix() {
 }
 ```
 
+## I. 二维弹球
+
+> welken 教我的，我是物理飞舞
+
+小球会往两个比较矮的边运动，然后直接分解这两个方向，发现分别是上抛运动。然后就做完了。剩下的就是简单的计算几何问题了。
+
+如果距离 $h$ 或加速度 $a$ 小于 `eps` 的话返回零向量，不然会 wa。我也不懂为什么，唉唉几何是这样的。
+
+```cpp
+constexpr double pi = numbers::pi_v<double>;
+constexpr double eps = 1e-5;
+
+void Thephix() {
+	Point<double> p;
+	array<Point<double>, 4> a {};
+	cin >> a[0] >> a[1] >> a[2] >> a[3] >> p;
+	
+	array<Point<double>, 2> L1, L2;
+	if (min(a[0].y, a[1].y) < min(a[2].y, a[3].y)) {
+		L1 = { a[0], a[1] };
+	} else {
+		L1 = { a[2], a[3] };
+	}
+
+	if (min(a[01].y, a[2].y) < min(a[3].y, a[0].y)) {
+		L2 = { a[1], a[2] };
+	} else {
+		L2 = { a[3], a[0] };
+	}
+
+	int n;
+	cin >> n;
+
+	auto f = [&](const array<Point<double>, 2>& line) -> Point<double> {
+		Point<double> v = (line[1] - line[0]).rotate(pi / 2);
+		v /= v.length();
+
+		double a = abs(v.dot(Point<double> (0, -10)));
+		double h = abs((line[1] - p).dot(v));
+
+		if (a < eps || h < eps) {
+			return Point<double>  { 0, 0 };
+		}
+
+		double T = 2 * sqrt(2 * h / a);
+		double t = n - floor(n / T) * T;
+		t = min(t, T - t);
+
+		return v * (a * t * t / 2);
+	};
+	
+	p += f(L1) + f(L2);
+	cout << p.x << ' ' << p.y << "\n";
+}
+```
+
 ## K. 不许偷吃
 
 > 最糖的一集！输出 $-1$ 之后忘记 `return` 了！我草！

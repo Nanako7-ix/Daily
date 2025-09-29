@@ -26,7 +26,6 @@ struct ChthollyTree {
 	
 	i64 n;
 	std::set<Node> odt;
-	Fn op;
 	
 	ChthollyTree (i64 n) { init(n); }
 
@@ -38,7 +37,7 @@ struct ChthollyTree {
 
 	std::set<Node>::iterator split(i64 p) {
 		if (p == n + 1) return odt.end();
-		auto it = odt.lower_bound(Node {p, 0, 0});
+		auto it = odt.lower_bound(Node {p, 0, Fn()});
 		if (it != odt.end() && it -> l == p) return it;
 		--it;
 		auto [l, r, v] = *it;
@@ -49,16 +48,16 @@ struct ChthollyTree {
 		return odt.emplace(p, r, v).first;
 	}
 
-	void flat(int l, int r) {
+	void assign(int l, int r, const Fn& val) {
 		assert(1 <= l && l <= r && r <= n);
 		auto y = split(r + 1);
 		auto x = split(l);
 		odt.erase(x, y);
-		odt.emplace(l, r, Fn());
+		odt.emplace(l, r, val);
 	}
 
 	template<typename F>
-	void apply(int l, int r, F&& f) {
+	void perform(int l, int r, F&& f) {
 		assert(1 <= l && l <= r && r <= n);
 		auto y = split(r + 1);
 		auto x = split(l);
@@ -88,13 +87,13 @@ void Thephix() {
 	vector<i64> d(n + 1);
 	for (int i = 1; i <= n; ++i) {
 		d[i] = a[i] - a[i - 1];
-		odt.apply(i, i, [&](int, int, i64& v) { v = d[i]; });
+		odt.assign(i, i, d[i]);
 	}
 
 	auto add = [&](int l, int r, i64 v) -> void {
-		odt.apply(l, r, [&](int, int, i64& x) { x += v; });
+		odt.perform(l, r, [&](int, int, i64& x) { x += v; });
 		if (r < n) {
-			odt.apply(r + 1, r + 1, [&](int, int, i64& x) {
+			odt.perform(r + 1, r + 1, [&](int, int, i64& x) {
 				x -= (r - l + 1) * v;
 			});
 		}
@@ -103,34 +102,24 @@ void Thephix() {
 	auto set = [&](int l, int r, i64 v) -> void {
 		i64 x = 0, y = 0;
 		if (l > 1) {
-			odt.apply(1, l - 1, [&](int L, int R, i64 val) {
+			odt.perform(1, l - 1, [&](int L, int R, i64 val) {
 				x += (R - L + 1) * val;
 				y += (R - L + 1) * val;
 			});
 		}
-		odt.apply(l, min(r + 1, n), [&](int L, int R, i64 val) {
+		odt.perform(l, min(r + 1, n), [&](int L, int R, i64 val) {
 			y += (R - L + 1) * val;
 		});
-		odt.apply(l, l, [&](int, int, i64& val) {
-			val = v - x;
-		});
-		
-		if (r < n) {
-			odt.apply(r + 1, r + 1, [&](int, int, i64& val) {
-				val = y - (r - l + 1) * v;
-			});
-		}
 
-		if (l != r) {
-			odt.flat(l + 1, r);
-			odt.apply(l + 1, r, [&](int, int, i64& x) { x = v; });
-		}
+		odt.assign(l, l, v - x);		
+		if (l != r) odt.assign(l + 1, r, v);
+		if (r < n) odt.assign(r + 1, r + 1, y - (r - l + 1) * v);
 	};
 
 	auto query = [&](int l, int r) -> int {
 		int ans = 0, ok = 0;
 		i64 last;
-		odt.apply(max(l, 2), min(r + 1, n), [&](int, int, i64 val) {
+		odt.perform(max(l, 2), min(r + 1, n), [&](int, int, i64 val) {
 			if (ok == 0) {
 				ok = 1;
 			} else {
