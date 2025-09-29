@@ -12,22 +12,18 @@ using f128 = __float128;
 void Thephix() {
 	int n, k;
 	cin >> n >> k;
-	vector<int> a(2 * n + 1);
-	iota(a.begin(), a.end(), 0);
-	for (int i = 1; i <= k; ++i) {
-		swap(a[2 * i - 1], a[2 * i]);
-	}
-	
-	for (int i = 1; i <= 2 * n; ++i) {
-		cout << a[i] << " \n"[i == 2 * n];
+	vector<int> cnt(n + 1);
+	for (int i = 1; i <= n; ++i) {
+		int x;
+		cin >> x;
+		cnt[x]++;
 	}
 
-	i64 sum1 = 0, sum2 = 0;
-	for (int i = 2; i <= 2 * n; i += 2) {
-		sum1 += abs(a[i] - a[i - 1]);
-		sum2 += a[i] - a[i - 1];
+	int del = cnt[k], add = 0;
+	for (int i = 0; i < k; ++i) {
+		add += cnt[i] == 0;
 	}
-	assert(sum1 - abs(sum2) == 2 * k);
+	cout << max(del, add) << "\n";
 }
 
 int main() {
@@ -35,7 +31,7 @@ int main() {
 	ios::sync_with_stdio(0);
 
 	int T = 1;
-	// cin >> T;
+	cin >> T;
 
 	while (T--) {
 		Thephix();
