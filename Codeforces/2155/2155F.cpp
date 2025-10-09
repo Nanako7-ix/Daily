@@ -171,12 +171,9 @@ void Thephix() {
 	int n, k, s, q;
 	cin >> n >> k >> s >> q;
 	VirtualTree tr(n);
-	vector<vector<int>> adj(n + 1);
 	for (int i = 1; i < n; ++i) {
 		int u, v;
 		cin >> u >> v;
-		adj[u].push_back(v);
-		adj[v].push_back(u);
 		tr.add(u, v);
 	}
 
@@ -211,7 +208,6 @@ void Thephix() {
 		}
 
 		// 利用虚树构建连通块
-		vector<array<int, 2>> E;
 		tr.build(col[c].begin(), col[c].end(), [&](int u, int v) {
 			if (vis[u] && vis[v] && abs(dep[u] - dep[v]) == 1) {
 				dsu.merge(u, v);

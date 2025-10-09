@@ -64,7 +64,6 @@ void Thephix() {
 		p.push_back(i);
 	}
 
-
 	if (a[p.back()].y == a[p.front()].y) {
 		p.pop_back();
 	}
