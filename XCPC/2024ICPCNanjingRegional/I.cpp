@@ -76,27 +76,39 @@ struct Comb {
 };
 
 template<typename T>
-vector<T> NTT(vector<T> a, vector<T> b) {
+std::vector<T> NTT(std::vector<T> a, std::vector<T> b) {
 	static constexpr u64 P = T::mod();
+	static constexpr  T  g = 3;
+	static std::vector<T> rt { 0, 1 };
 
 	int tot = a.size() + b.size() - 1;
-	int k = __lg(tot), n = 1 << (k + 1);
+	int k = std::__lg(tot), n = 1 << (k + 1);
 
-	vector<int> rev(n);
+	std::vector<int> rev(n);
 	for (int i = 0; i < n; ++i) {
 		rev[i] = rev[i >> 1] >> 1 | (i & 1) << k;
 	}
 
-	auto dft = [&](vector<T>& f, const T& g) {
+	if ((int) rt.size() < n) {
+		int k = std::countr_zero(rt.size());
+		rt.resize(n);
+		for (; (1 << k) < n; ++k) {
+			auto e = g.pow((P - 1) >> (k + 1));
+			for (int i = 1 << (k - 1); i < (1 << k); ++i) {
+				rt[i << 1] = rt[i];
+				rt[i << 1 | 1] = rt[i] * e;
+			}
+		}
+	}
+
+	auto dft = [&](std::vector<T>& f) {
 		for (int i = 0; i < n; ++i) {
-			if (i < rev[i]) swap(f[i], f[rev[i]]);
+			if (i < rev[i]) std::swap(f[i], f[rev[i]]);
 		}
 		for (int i = 1; i < n; i <<= 1) {
-			T wn = g.pow((P - 1) / (i << 1));
 			for (int j = 0; j < n; j += 2 * i) {
-				T w = 1;
-				for (int k = 0; k < i; ++k, w *= wn) {
-					T fx = f[j + k], fy = f[i + j + k] * w;
+				for (int k = 0; k < i; ++k) {
+					T fx = f[j + k], fy = f[i + j + k] * rt[i + k];
 					f[j + k] = fx + fy;
 					f[i + j + k] = fx - fy;
 				}
@@ -105,18 +117,19 @@ vector<T> NTT(vector<T> a, vector<T> b) {
 	};
 
 	a.resize(n), b.resize(n);
-	dft(a, 3), dft(b, 3);
+	dft(a), dft(b);
 
 	for (int i = 0; i < n; ++i) {
 		a[i] *= b[i];
 	}
-	
-	dft(a, 332748118);
-	const T inv = T(n).inv();
+
+	std::reverse(a.begin() + 1, a.end());
+	dft(a);
+	a.resize(tot);
+	T inv = T(n).inv();
 	for (int i = 0; i < tot; ++i) {
 		a[i] *= inv;
 	}
-	
 	return a;
 }
 

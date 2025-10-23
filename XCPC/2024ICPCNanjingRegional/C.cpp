@@ -36,71 +36,93 @@ private:
 	U x;
 };
 
-template<typename T>
-vector<T> NTT(vector<T> a, vector<T> b) {
-	static constexpr u64 P = T::mod();
-
-	int tot = a.size() + b.size() - 1;
-	int k = __lg(tot), n = 1 << (k + 1);
-
-	vector<int> rev(n);
-	for (int i = 0; i < n; ++i) {
-		rev[i] = rev[i >> 1] >> 1 | (i & 1) << k;
-	}
-
-	auto dft = [&](vector<T>& f, const T& g) {
-		for (int i = 0; i < n; ++i) {
-			if (i < rev[i]) swap(f[i], f[rev[i]]);
+template<typename Z>
+struct Comb {
+	int n;
+	std::vector<Z> f, g;
+	Comb() : n(0), f{1}, g{1} {}
+	void init(int m) {
+		if (m <= n) return;
+		f.resize(m + 1);
+		g.resize(m + 1);
+		for (int i = n + 1; i <= m; ++i) {
+			f[i] = f[i - 1] * i;
 		}
-		for (int i = 1; i < n; i <<= 1) {
-			T wn = g.pow((P - 1) / (i << 1));
-			for (int j = 0; j < n; j += 2 * i) {
-				T w = 1;
-				for (int k = 0; k < i; ++k, w *= wn) {
-					T fx = f[j + k], fy = f[i + j + k] * w;
-					f[j + k] = fx + fy;
-					f[i + j + k] = fx - fy;
-				}
-			}
+		g[m] = f[m].inv();
+		for (int i = m; i >= n + 1; --i) {
+			g[i - 1] = g[i] * i;
 		}
-	};
-
-	a.resize(n), b.resize(n);
-	dft(a, 3), dft(b, 3);
-
-	for (int i = 0; i < n; ++i) {
-		a[i] *= b[i];
+		n = m;
 	}
-	
-	dft(a, 332748118);
-	const T inv = T(n).inv();
-	for (int i = 0; i < tot; ++i) {
-		a[i] *= inv;
+	Z fac(int m) {
+		if (n < m) init(2 * m);
+		return f[m];
 	}
-	
-	return a;
-}
+	Z invfac(int m) {
+		if (n < m) init(2 * m);
+		return g[m];
+	}
+	Z inv(int m) {
+		return invfac(m) * fac(m - 1);
+	}
+	Z C(int n, int m) {
+		if (n < m || m < 0) return 0;
+		return fac(n) * invfac(m) * invfac(n - m);
+	}
+	Z A(int n, int m) {
+		if (n < m || m < 0) return 0;
+		return fac(n) * invfac(n - m);
+	}
+};
 
 using Z = ModInt<u32, 998244353>;
+Comb<Z> comb;
 
 void Thephix() {
-	int n, m;
-	cin >> n >> m;
-	n++, m++;
-
-	vector<Z> a(n), b(m);
-	for (int i = 0; i < n; ++i) {
-		cin >> a[i];
-	}
-	for (int i = 0; i < m; ++i) {
-		cin >> b[i];
+	int n;
+	cin >> n;
+	vector<vector<int>> adj(n + 1);
+	for (int u = 2; u <= n; ++u) {
+		int p; cin >> p;
+		adj[p].push_back(u);
 	}
 
-	auto f = NTT(a, b);
-	for (int i = 0; i < n + m - 1; ++i) {
-		cout << f[i] << " ";
+	vector<int> siz(n + 1);
+	vector<Z> g(n + 1);
+	auto jxt = [&](auto&& jxt, int u, int p) -> void {
+		siz[u] = 1;
+		g[u] = 1;
+		for (auto& v : adj[u]) {
+			if (v == p) continue;
+			jxt(jxt, v, u);
+			siz[u] += siz[v];
+			g[u] *= g[v];
+		}
+		g[u] *= siz[u];
+	}; jxt(jxt, 1, 0);
+	
+	vector<vector<Z>> f(n + 1, vector<Z> (n + 1));
+	f[1][1] = 1;
+
+	auto dfs = [&](auto&& dfs, int u, int p) -> void {
+		if (p != 0) {
+			Z x = comb.fac(siz[p] - siz[u]) * g[u] / g[p] * siz[p] / (siz[p] - siz[u]);
+			Z y = 0;
+			for (int i = 1; i <= n; ++i) {
+				f[u][i] = x * y;
+				y += comb.C(n - siz[u] - i, siz[p] - siz[u] - 1) * f[p][i];
+			}
+		}
+		for (auto& v : adj[u]) {
+			if (v == p) continue;
+			dfs(dfs, v, u);
+		}
+	}; dfs(dfs, 1, 0);
+
+	for (int u = 1; u <= n; ++u) {
+		Z ans = comb.C(n - u, siz[u] - 1) * f[u][u] * (comb.fac(siz[u]) / g[u]);
+		cout << ans << " \n"[u == n];
 	}
-	cout << "\n";
 }
 
 int main() {

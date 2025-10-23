@@ -398,7 +398,7 @@ $$
 A(k) \cdot B(k-\operatorname{ cnt }) \rightarrow g(\operatorname{ cnt })
 $$
 
-$A$ 和 $B$ 的下标加起来不等于 $\operatorname{ cnt }$，这就很坏了。但是如果我们把 $A$ reverse 一下，$k$ 的符号就是正的了，然后 offset 一下就能求出 $g(x)$ 了。此事在**2025CCPC郑州邀请赛K**中有所记载。
+$A$ 和 $B$ 的下标加起来不等于 $\operatorname{ cnt }$，这就很坏了。但是如果我们把 $A$ reverse 一下，$k$ 的符号就是正的了，然后 offset 一下就能求出 $g(x)$ 了。此事在**2025CCPC郑州邀请赛K**中亦有记载。
 
 令：
 $$
@@ -461,3 +461,62 @@ void Thephix() {
 	cout << ans << "\n";
 }
 ```
+
+## M. Ordainer of Inexorable Judgment
+
+给一个凸包，求相交的时间。
+
+显然分成若干个整圈和不足一圈的部分。然后计算的时候直接用极角来做即可。由于这题保证了原点距离凸包至少为 $d$，所以每一圈一定是某个时间区间。而且这个凸包一定是在某个**半平面**内，这样他们极角的差值应该不超过 $\pi$。利用这个修正极角即可。
+
+```cpp
+
+```
+
+## C. Topology
+
+非常变态的计数题。
+
+考虑 $f(u, i)$ 表示：考虑去掉 $u$ 子树内（不包括 $u$ 本身）的节点后所形成的树，对这棵树的满足 $p(i) = u$ 的拓扑序的数量。那么 $\operatorname{ans}(u)$ 是：
+
+$$
+\binom{n - u}{\operatorname{siz}(u) - 1}\cdot f(u, u)\cdot g(u)
+$$
+
+其中 $g(u)$ 表示的是考虑 $u$ 这棵子树的拓扑序的数量。为什么这么做是对的呢？因为不考虑 $u$ 的子树，得到了一个长度为 $n - (\operatorname{siz}(u) - 1)$ 的拓扑序，并且保证了 $u$ 放在第 $u$ 个位置。然后再把 $u$ 的子树的拓扑序合并进来。合并的时候，把第一个序列的第 $u + 1$ 位开始的后缀跟第二个序列的第 $2$ 位开始的后缀合并，这个的方案数是：
+
+$$
+\binom{(n - (\operatorname{siz}(u) - 1) - u) + (\operatorname{siz}(u) - 1)}{\operatorname{siz}(u) - 1} = \binom{n - u}{\operatorname{siz}(u) - 1}
+$$
+
+考虑 $g$ 的计算，最简单的解法就是直接通过树上 dp 暴力求解。在这个基础上乱搞一下可以得到这个式子：
+
+$$
+g(u) = \frac{\operatorname{siz}(u) !}{\prod\limits_{v \in \operatorname{subtree}(u)} \operatorname{siz}(v)}
+$$
+
+接下来再计算 $f(u, i)$。这里是选择从 $fa(u)$ 向 $u$ 转移而不是儿子们向 $u$ 转移。令 $p = fa(u)$，那么转移的时候考虑 $p$ 放在哪个位置。显然只需要考虑 $1 \leq j < i$ 即可。
+
+假设从 $f(p, j)$ 转移到 $f(u, i)$，那么需要做的是：把除了 $u$ 以外的 $p$ 的其他儿子的子树放到拓扑序里面，然后 $u$ 节点直接放到 $i$ 位置。因为 $u$ 一定放在 $i$，所以方案数等价于把其他子树的拓扑序放到原有拓扑序中。
+
+先考虑其他子树的拓扑序。实际上就是考虑去掉 $u$ 子树的 $p$ 子树的拓扑序。用上面的式子求出来应该是：
+
+$$
+\frac{(\operatorname{siz}(p) - \operatorname{siz}(u))!\prod\limits_{v \in \operatorname{subtree}(u)} \operatorname{siz}(v)}{\prod\limits_{v \in \operatorname{subtree}(p)} \operatorname{siz}(v)} \cdot \frac{\operatorname{siz}(p)}{\operatorname{siz}(p) - \operatorname{siz}(u)}
+$$
+
+合并的方案数是：
+
+$$
+\binom{n - \operatorname{siz}(u) - j}{\operatorname{siz}(p) - \operatorname{siz}(u) - 1}
+$$
+
+那么：
+
+$$
+\begin{aligned}
+f(u, i) &= \sum_{j=1}^{i-1} (\binom{n - \operatorname{siz}(u) - j}{\operatorname{siz}(p) - \operatorname{siz}(u) - 1}\cdot \frac{(\operatorname{siz}(p) - \operatorname{siz}(u))!\prod\limits_{v \in \operatorname{subtree}(u)} \operatorname{siz}(v)}{\prod\limits_{v \in \operatorname{subtree}(p)} \operatorname{siz}(v)} \cdot \frac{\operatorname{siz}(p)}{\operatorname{siz}(p) - \operatorname{siz}(u)}  \cdot f(p, j))\\
+&= \frac{(\operatorname{siz}(p) - \operatorname{siz}(u))!\prod\limits_{v \in \operatorname{subtree}(u)} \operatorname{siz}(v)}{\prod\limits_{v \in \operatorname{subtree}(p)} \operatorname{siz}(v)} \cdot \frac{\operatorname{siz}(p)}{\operatorname{siz}(p) - \operatorname{siz}(u)} \cdot \sum_{j=1}^{i-1} (\binom{n - \operatorname{siz}(u) - j}{\operatorname{siz}(p) - \operatorname{siz}(u) - 1}\cdot  f(p, j))
+\end{aligned}
+$$
+
+发现求和这一块东西是一个前缀和的形式。优化一下就可以在 $O(n^2)$ 内求解了。
