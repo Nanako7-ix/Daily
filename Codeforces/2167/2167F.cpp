@@ -1,0 +1,61 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+using i64  = long long;
+using u64  = unsigned long long;
+using u32  = unsigned;
+using u128 = unsigned __int128;
+using i128 = __int128;
+
+void Thephix() {
+	int n, k;
+	cin >> n >> k;
+	vector<vector<int>> adj(n + 1);
+	for (int i = 1; i < n; ++i) {
+		int u, v;
+		cin >> u >> v;
+		adj[u].push_back(v);
+		adj[v].push_back(u);
+	}
+
+	vector<int> siz(n + 1), dp(n + 1);
+	
+	[&](this auto&& dfs, int u, int fa) -> void {
+		siz[u] = 1;
+		for (auto v : adj[u]) {
+			if (v == fa) continue;
+			dfs(v, u);
+			siz[u] += siz[v];
+			dp[u] += dp[v];
+		}
+		dp[u] += siz[u] >= k;
+	} (1, 0);
+
+	[&](this auto&& dfs, int u, int fa) -> void {
+		for (auto v : adj[u]) {
+			if (v == fa) continue;
+			dp[v] = dp[u] - (n - siz[v] < k) + (siz[v] < k);
+			dfs(v, u);
+		}
+	} (1, 0);
+
+	i64 ans = 0;
+	for (int i = 1; i <= n; ++i) {
+		ans += dp[i];
+	}
+	cout << ans << "\n";
+}
+
+int main() {
+	cin.tie(0), cout.tie(0);
+	ios::sync_with_stdio(0);
+
+	int T = 1;
+	cin >> T;
+
+	while (T--) {
+		Thephix();
+	}
+
+	return 0;
+}
